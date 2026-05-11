@@ -14,7 +14,7 @@ const AppCanvas = () => {
       }}
     >
       <ambientLight intensity={2} />
-      <color args={['amber']} attach={'background'} />
+      <color args={['#212122']} attach={'background'} />
       <Experience />
       <OrbitControls />
     </Canvas>

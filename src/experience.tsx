@@ -1,5 +1,6 @@
 import { useLevaControls } from './hooks/useLevaControls';
-import { Center, SpotLight, useGLTF } from '@react-three/drei';
+import { Center, SpotLight, useAnimations, useGLTF } from '@react-three/drei';
+import { useEffect } from 'react';
 
 const Experience = () => {
   const spotlightControls = useLevaControls('Spotlight', {
@@ -9,14 +10,29 @@ const Experience = () => {
     },
   });
 
+  const penguin = useGLTF('./models/penguin/scene.gltf');
+  const animations = useAnimations(penguin.animations, penguin.scene);
+  console.log(animations);
+
   const penguinControls = useLevaControls('Penguin', {
     rotation: {
       value: [0, 3.2, 0],
       step: 0.1,
     },
+    animationName: {
+      options: animations.names,
+      value: 'Walk',
+    },
   });
 
-  const penguin = useGLTF('./models/penguin/scene.gltf');
+  useEffect(() => {
+    const action = animations.actions[penguinControls.animationName];
+    action?.reset().fadeIn(0.5).play();
+
+    return () => {
+      action?.fadeOut(0.5);
+    };
+  }, [penguinControls.animationName]);
 
   return (
     <mesh>
@@ -29,7 +45,7 @@ const Experience = () => {
         anglePower={0}
       />
       <Center>
-        <mesh scale={1.5} rotation={penguinControls.rotation as [number, number, number]}>
+        <mesh scale={2.5} rotation={penguinControls.rotation as [number, number, number]}>
           <primitive object={penguin.scene} />
         </mesh>
       </Center>
