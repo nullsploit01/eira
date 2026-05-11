@@ -10,11 +10,11 @@ const AppCanvas = () => {
         fov: 45,
         near: 0.1,
         far: 200,
-        position: [-5, 2.3, 5],
+        position: [-3, 2, 5],
       }}
     >
-      {/* <ambientLight intensity={2} /> */}
-      <color args={['black']} attach={'background'} />
+      <ambientLight intensity={2} />
+      <color args={['amber']} attach={'background'} />
       <Experience />
       <OrbitControls />
     </Canvas>
