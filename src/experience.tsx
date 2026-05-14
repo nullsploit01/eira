@@ -1,18 +1,14 @@
 import { useLevaControls } from './hooks/useLevaControls';
-import { Center, SpotLight, useAnimations, useGLTF } from '@react-three/drei';
+import { useAnimations, useGLTF } from '@react-three/drei';
+import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import { useEffect } from 'react';
+import { DoubleSide } from 'three';
 
 const Experience = () => {
-  const spotlightControls = useLevaControls('Spotlight', {
-    position: {
-      value: [2.7, 3.1, 1.9],
-      step: 0.1,
-    },
-  });
-
   const penguin = useGLTF('./models/penguin/scene.gltf');
-  const animations = useAnimations(penguin.animations, penguin.scene);
-  console.log(animations);
+  const penguinAnimations = useAnimations(penguin.animations, penguin.scene);
+
+  const woodSigns = useGLTF('./models/wood_signs/scene.gltf');
 
   const penguinControls = useLevaControls('Penguin', {
     rotation: {
@@ -20,13 +16,15 @@ const Experience = () => {
       step: 0.1,
     },
     animationName: {
-      options: animations.names,
+      options: penguinAnimations.names,
       value: 'Walk',
     },
   });
 
+  console.log(woodSigns);
+
   useEffect(() => {
-    const action = animations.actions[penguinControls.animationName];
+    const action = penguinAnimations.actions[penguinControls.animationName];
     action?.reset().fadeIn(0.5).play();
 
     return () => {
@@ -35,21 +33,25 @@ const Experience = () => {
   }, [penguinControls.animationName]);
 
   return (
-    <mesh>
-      <SpotLight
-        position={spotlightControls.position as [number, number, number]}
-        distance={10}
-        angle={3}
-        attenuation={5}
-        intensity={10}
-        anglePower={0}
-      />
-      <Center>
-        <mesh scale={2.5} rotation={penguinControls.rotation as [number, number, number]}>
+    <>
+      <RigidBody type="fixed">
+        <mesh rotation={[-Math.PI * 0.5, 0, 0]}>
+          <planeGeometry args={[10, 10]} />
+          <meshBasicMaterial side={DoubleSide} />
+        </mesh>
+
+        <CuboidCollider args={[5, 0.1, 5]} />
+      </RigidBody>
+
+      <RigidBody
+        rotation={penguinControls.rotation as [number, number, number]}
+        position={[0, 1, 0]}
+      >
+        <mesh scale={2}>
           <primitive object={penguin.scene} />
         </mesh>
-      </Center>
-    </mesh>
+      </RigidBody>
+    </>
   );
 };
 
