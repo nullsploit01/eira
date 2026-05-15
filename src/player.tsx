@@ -71,22 +71,27 @@ const Player = () => {
 
     const velocity = body.current.linvel();
 
-    const direction = new Vector3(
-      velocity.x,
-
-      0,
-
-      velocity.z,
-    );
+    const direction = new Vector3(velocity.x, 0, velocity.z);
 
     if (direction.length() > 0.01) {
       direction.normalize();
 
       const angle = Math.atan2(direction.x, direction.z);
 
-      const quaternion = new Quaternion().setFromEuler(new Euler(0, angle, 0));
+      const targetQuaternion = new Quaternion().setFromEuler(new Euler(0, angle, 0));
 
-      body.current.setRotation(quaternion, true);
+      const currentRotation = body.current.rotation();
+
+      const currentQuaternion = new Quaternion(
+        currentRotation.x,
+        currentRotation.y,
+        currentRotation.z,
+        currentRotation.w,
+      );
+
+      currentQuaternion.slerp(targetQuaternion, 0.1);
+
+      body.current.setRotation(currentQuaternion, true);
     }
   });
 
@@ -100,6 +105,7 @@ const Player = () => {
         friction={1}
         position={[0, 1, 0]}
         canSleep={false}
+        enabledRotations={[false, false, false]}
         rotation={penguinControls.rotation as [number, number, number]}
       >
         <mesh castShadow scale={2}>
