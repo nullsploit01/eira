@@ -1,5 +1,6 @@
 import { snowmanAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
+import { useExperienceStore } from './stores/experience_store';
 import { Html, useAnimations, useCursor, useGLTF, useHelper } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
@@ -9,6 +10,9 @@ import { DoubleSide, Mesh, PointLight, PointLightHelper } from 'three';
 const Environment = () => {
   const { camera } = useThree();
   const lightRef = useRef<PointLight>({} as PointLight);
+  const startGame = useExperienceStore((state) => state.startGame);
+  const hasStarted = useExperienceStore((state) => state.hasStarted);
+
   const [hovered, setHovered] = useState(false);
   const cameraControls = useLevaControls('Camera', {
     cameraPosition: [3.28, 2, 5.3] as [number, number, number],
@@ -130,7 +134,7 @@ const Environment = () => {
           <div
             onPointerEnter={() => setHovered(true)}
             onPointerLeave={() => setHovered(false)}
-            onClick={() => console.log('clicked')}
+            onClick={() => startGame()}
             style={{
               position: 'relative',
               padding: '6px 12px',
@@ -147,7 +151,7 @@ const Environment = () => {
               textShadow: '0 2px 4px rgba(0,0,0,0.45)',
             }}
           >
-            Hey traveler ☃️ Wanna Explore?
+            {!hasStarted ? 'Hey traveler ☃️ Wanna Explore?' : 'Have Fun!'}
             <div
               style={{
                 position: 'absolute',

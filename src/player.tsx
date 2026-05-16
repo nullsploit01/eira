@@ -1,5 +1,6 @@
 import { playerAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
+import { useExperienceStore } from './stores/experience_store';
 import { useAnimations, useGLTF, useKeyboardControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { CuboidCollider, RapierRigidBody, RigidBody } from '@react-three/rapier';
@@ -7,6 +8,8 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 const Player = () => {
+  const hasStarted = useExperienceStore((state) => state.hasStarted);
+
   const [subscribeKeys, getKeys] = useKeyboardControls();
   const [playerAnimation, setPlayerAnimation] = useState<string>(playerAnimations.sleep);
 
@@ -29,7 +32,6 @@ const Player = () => {
     return unsubscribe;
   }, [subscribeKeys]);
 
-  //   const { rapier, world } = useRapier();
   const body = useRef<RapierRigidBody>({} as RapierRigidBody);
 
   const penguin = useGLTF('./models/penguin/scene.gltf');
@@ -67,7 +69,7 @@ const Player = () => {
   }, []);
 
   useEffect(() => {
-    if (!playerControls.cameraFollowsPlayer) {
+    if (!playerControls.cameraFollowsPlayer && !hasStarted) {
       return;
     }
 
@@ -83,7 +85,7 @@ const Player = () => {
     action.reset().fadeIn(0.5);
     action.setLoop(THREE.LoopRepeat, 3);
     action.play();
-  }, [playerControls.cameraFollowsPlayer]);
+  }, [playerControls.cameraFollowsPlayer, hasStarted]);
 
   useEffect(() => {
     const action = penguinAnimations.actions[playerControls.animationName];
@@ -116,7 +118,7 @@ const Player = () => {
     smoothCameraPosition.lerp(cameraPosition, 5 * delta);
     smoothCameraTarget.lerp(cameraTarget, 5 * delta);
 
-    if (playerControls.cameraFollowsPlayer) {
+    if (playerControls.cameraFollowsPlayer || hasStarted) {
       if (isTransitioning.current) {
         const transitionSpeed = 2.5;
 
