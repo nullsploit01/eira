@@ -8,10 +8,13 @@ import * as THREE from 'three';
 
 const Player = () => {
   const [subscribeKeys, getKeys] = useKeyboardControls();
-  const [playerAnimation, setPlayerAnimation] = useState<string>(playerAnimations.idle);
+  const [playerAnimation, setPlayerAnimation] = useState<string>(playerAnimations.sleep);
 
   const [smoothCameraPosition] = useState(() => new THREE.Vector3(10, 10, 10));
   const [smoothCameraTarget] = useState(() => new THREE.Vector3());
+
+  const targetRotation = useRef(0);
+  const currentRotationY = useRef(0);
 
   useEffect(() => {
     const unsubscribe = subscribeKeys(
@@ -31,11 +34,6 @@ const Player = () => {
   const penguinAnimations = useAnimations(penguin.animations, penguin.scene);
 
   const playerControls = useLevaControls('Player', {
-    rotation: {
-      value: [0, 3.2, 0],
-      step: 0.1,
-    },
-
     position: {
       value: [0, 1, 2.3],
       step: 0.1,
@@ -103,7 +101,9 @@ const Player = () => {
       Number(keys.forward) - Number(keys.backward),
     );
 
-    direction.normalize().multiplyScalar(impulseStrength);
+    if (direction.lengthSq() > 0) {
+      direction.normalize().multiplyScalar(impulseStrength);
+    }
 
     if (direction.length() > 0) {
       // camera direction
@@ -123,17 +123,25 @@ const Player = () => {
 
       // rotate player
       const angle = Math.atan2(direction.x, direction.z);
-      const targetQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, angle, 0));
-      const currentRotation = body.current.rotation();
-      const currentQuaternion = new THREE.Quaternion(
-        currentRotation.x,
-        currentRotation.y,
-        currentRotation.z,
-        currentRotation.w,
+      targetRotation.current = angle;
+
+      let angleDiff = targetRotation.current - currentRotationY.current;
+
+      while (angleDiff > Math.PI) {
+        angleDiff -= Math.PI * 2;
+      }
+
+      while (angleDiff < -Math.PI) {
+        angleDiff += Math.PI * 2;
+      }
+
+      currentRotationY.current += angleDiff * 4 * delta;
+
+      const quaternion = new THREE.Quaternion().setFromEuler(
+        new THREE.Euler(0, currentRotationY.current, 0),
       );
 
-      currentQuaternion.slerp(targetQuaternion, 10 * delta);
-      body.current.setRotation(currentQuaternion, true);
+      body.current.setRotation(quaternion, true);
     }
   });
 
@@ -147,7 +155,6 @@ const Player = () => {
         friction={1}
         canSleep={true}
         position={playerControls.position as [number, number, number]}
-        rotation={playerControls.rotation as [number, number, number]}
         enabledRotations={[false, false, false]}
       >
         <mesh castShadow scale={2}>
