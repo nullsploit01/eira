@@ -3,7 +3,7 @@ import { useLevaControls } from './hooks/useLevaControls';
 import { useSnowmanLookAtCamera } from './hooks/useSnowmanLookAtCamera';
 import SnowmanMessage from './snowman_message';
 import { useAnimations, useGLTF } from '@react-three/drei';
-import { RigidBody } from '@react-three/rapier';
+import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import { useEffect, useRef } from 'react';
 import { Group, Mesh } from 'three';
 
@@ -62,7 +62,7 @@ const Snowman = () => {
       type="fixed"
     >
       <primitive ref={snowmanRef} object={snowman.scene} />
-
+      <CuboidCollider args={[1, 5, 1]} />
       <SnowmanMessage />
     </RigidBody>
   );

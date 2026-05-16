@@ -1,5 +1,6 @@
 import { useLevaControls } from './hooks/useLevaControls';
 import { useGLTF } from '@react-three/drei';
+import { RigidBody } from '@react-three/rapier';
 
 const Igloo = () => {
   const igloo = useGLTF('./models/igloo/igloo.glb');
@@ -20,9 +21,11 @@ const Igloo = () => {
   return (
     <>
       <group rotation={controls.rotation} position={controls.position}>
-        <mesh scale={controls.scale}>
-          <primitive object={igloo.scene} />
-        </mesh>
+        <RigidBody type="fixed">
+          <mesh scale={controls.scale}>
+            <primitive object={igloo.scene} />
+          </mesh>
+        </RigidBody>
       </group>
     </>
   );
