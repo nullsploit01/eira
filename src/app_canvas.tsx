@@ -8,6 +8,7 @@ import { Physics } from '@react-three/rapier';
 const AppCanvas = () => {
   const generalControls = useLevaControls('General', {
     color: '#212122',
+    debugPhysics: false,
   });
 
   return (
@@ -15,13 +16,12 @@ const AppCanvas = () => {
       <Canvas
         shadows
         camera={{
-          fov: 45,
+          fov: 55,
           near: 0.1,
-          far: 200,
-          position: [-3, 2, 5],
+          far: 45,
         }}
       >
-        <Physics debug>
+        <Physics debug={generalControls.debugPhysics}>
           <ambientLight intensity={2} />
           <color args={[generalControls.color]} attach={'background'} />
           <Experience />

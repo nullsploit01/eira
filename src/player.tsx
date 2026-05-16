@@ -30,9 +30,14 @@ const Player = () => {
   const penguin = useGLTF('./models/penguin/scene.gltf');
   const penguinAnimations = useAnimations(penguin.animations, penguin.scene);
 
-  const penguinControls = useLevaControls('Player', {
+  const playerControls = useLevaControls('Player', {
     rotation: {
       value: [0, 3.2, 0],
+      step: 0.1,
+    },
+
+    position: {
+      value: [0, 1, 2.3],
       step: 0.1,
     },
 
@@ -54,13 +59,13 @@ const Player = () => {
   }, [playerAnimation]);
 
   useEffect(() => {
-    const action = penguinAnimations.actions[penguinControls.animationName];
+    const action = penguinAnimations.actions[playerControls.animationName];
     action?.reset().fadeIn(0.5).play();
 
     return () => {
       action?.fadeOut(0.5);
     };
-  }, [penguinControls.animationName]);
+  }, [playerControls.animationName]);
 
   useFrame((state, delta) => {
     const bodyPosition = body.current.translation();
@@ -90,7 +95,7 @@ const Player = () => {
 
     smoothCameraTarget.lerp(cameraTarget, 5 * delta);
 
-    if (penguinControls.cameraFollowsPlayer) {
+    if (playerControls.cameraFollowsPlayer) {
       state.camera.position.copy(smoothCameraPosition);
       state.camera.lookAt(smoothCameraTarget);
     }
@@ -158,10 +163,10 @@ const Player = () => {
         ref={body}
         restitution={0.2}
         friction={1}
-        position={[0, 1, 0]}
-        canSleep={false}
+        canSleep={true}
+        position={playerControls.position as [number, number, number]}
+        rotation={playerControls.rotation as [number, number, number]}
         enabledRotations={[false, false, false]}
-        rotation={penguinControls.rotation as [number, number, number]}
       >
         <mesh castShadow scale={2}>
           <primitive object={penguin.scene} />
