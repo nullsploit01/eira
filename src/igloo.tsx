@@ -1,9 +1,34 @@
 import { useLevaControls } from './hooks/useLevaControls';
-import { useGLTF } from '@react-three/drei';
+import { useGLTF, useHelper } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
+import { useEffect, useRef } from 'react';
+import { Mesh, type PointLight, PointLightHelper } from 'three';
 
 const Igloo = () => {
   const igloo = useGLTF('./models/igloo/igloo.glb');
+  const lantern = useGLTF('./models/lantern/lantern.glb');
+  const woodenSign = useGLTF('./models/wooden_sign/wooden_sign.glb');
+  const lightRef = useRef<PointLight>({} as PointLight);
+
+  useEffect(() => {
+    igloo.scene.traverse((child) => {
+      if (child instanceof Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+    lantern.scene.traverse((child) => {
+      if (child instanceof Mesh) {
+        child.castShadow = true;
+      }
+    });
+    woodenSign.scene.traverse((child) => {
+      if (child instanceof Mesh) {
+        child.castShadow = true;
+      }
+    });
+  }, []);
+
   const controls = useLevaControls('Igloo', {
     position: {
       value: [-5, -0.2, 13] as [number, number, number],
@@ -17,7 +42,16 @@ const Igloo = () => {
       value: 2.2,
       step: 0.1,
     },
+    lightPosition: {
+      value: [1.6, 1.8, 3.7] as [number, number, number],
+      step: 0.1,
+    },
+    lightColor: '#ffd580',
+    showLightHelper: false,
   });
+
+  useHelper(controls.showLightHelper ? lightRef : null, PointLightHelper, 0.1, 'hotpink');
+
   return (
     <>
       <group rotation={controls.rotation} position={controls.position}>
@@ -26,6 +60,24 @@ const Igloo = () => {
             <primitive object={igloo.scene} />
           </mesh>
         </RigidBody>
+        <mesh rotation={[0, 3, 0]} position={[1.8, 0, 4]}>
+          <primitive object={lantern.scene} />
+        </mesh>
+
+        <pointLight
+          ref={lightRef}
+          castShadow
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
+          position={controls.lightPosition}
+          intensity={8}
+          distance={15}
+          decay={2}
+          color={controls.lightColor}
+        />
+        <mesh scale={0.5} position={[-2.2, 0.5, 2.3]} rotation-y={0.6}>
+          <primitive object={woodenSign.scene} />
+        </mesh>
       </group>
     </>
   );

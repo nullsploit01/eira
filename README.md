@@ -5,3 +5,5 @@
 "Snow Man" (https://skfb.ly/6WKLo) by Erik H is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 
 "Igloo" (https://skfb.ly/oBoTZ) by Vera4Art is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+"Stylized Lantern" (https://skfb.ly/6FQqq) by Izzy is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
