@@ -4,11 +4,14 @@ import { useAnimations, useGLTF, useKeyboardControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { RapierRigidBody, RigidBody } from '@react-three/rapier';
 import { useEffect, useRef, useState } from 'react';
-import { Euler, Quaternion, Vector3 } from 'three';
+import * as THREE from 'three';
 
 const Player = () => {
   const [subscribeKeys, getKeys] = useKeyboardControls();
   const [playerAnimation, setPlayerAnimation] = useState<string>(playerAnimations.idle);
+
+  const [smoothCameraPosition] = useState(() => new THREE.Vector3(10, 10, 10));
+  const [smoothCameraTarget] = useState(() => new THREE.Vector3());
 
   useEffect(() => {
     const unsubscribe = subscribeKeys(
@@ -57,9 +60,38 @@ const Player = () => {
     };
   }, [penguinControls.animationName]);
 
-  useFrame((_, delta) => {
-    // const bodyPosition = body.current.translation();
+  useFrame((state, delta) => {
+    const bodyPosition = body.current.translation();
+    const cameraPosition = new THREE.Vector3();
+    const cameraOffset = new THREE.Vector3(0, 0.85, -4.25);
+    const bodyRotation = body.current.rotation();
+    const quaternion = new THREE.Quaternion(
+      bodyRotation.x,
+      bodyRotation.y,
+      bodyRotation.z,
+      bodyRotation.w,
+    );
 
+    cameraOffset.applyQuaternion(quaternion);
+
+    cameraPosition.copy(bodyPosition).add(cameraOffset);
+
+    const cameraTarget = new THREE.Vector3();
+    cameraTarget.copy(bodyPosition);
+
+    cameraTarget.y += 0.25;
+
+    smoothCameraPosition.lerp(
+      cameraPosition,
+
+      5 * delta,
+    );
+
+    smoothCameraTarget.lerp(cameraTarget, 5 * delta);
+
+    state.camera.position.copy(smoothCameraPosition);
+
+    state.camera.lookAt(smoothCameraTarget);
     const keys = getKeys();
 
     const impulse = { x: 0, y: 0, z: 0 };
@@ -92,18 +124,18 @@ const Player = () => {
 
     const velocity = body.current.linvel();
 
-    const direction = new Vector3(velocity.x, 0, velocity.z);
+    const direction = new THREE.Vector3(velocity.x, 0, velocity.z);
 
     if (direction.length() > 0.01) {
       direction.normalize();
 
       const angle = Math.atan2(direction.x, direction.z);
 
-      const targetQuaternion = new Quaternion().setFromEuler(new Euler(0, angle, 0));
+      const targetQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, angle, 0));
 
       const currentRotation = body.current.rotation();
 
-      const currentQuaternion = new Quaternion(
+      const currentQuaternion = new THREE.Quaternion(
         currentRotation.x,
         currentRotation.y,
         currentRotation.z,
