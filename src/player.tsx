@@ -2,7 +2,7 @@ import { playerAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
 import { useAnimations, useGLTF, useKeyboardControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { RapierRigidBody, RigidBody } from '@react-three/rapier';
+import { CuboidCollider, RapierRigidBody, RigidBody } from '@react-three/rapier';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
@@ -208,12 +208,14 @@ const Player = () => {
         restitution={0.2}
         friction={1}
         canSleep={true}
+        colliders={false}
         position={playerControls.position as [number, number, number]}
         enabledRotations={[false, false, false]}
       >
         <mesh castShadow scale={2}>
           <primitive object={penguin.scene} />
         </mesh>
+        <CuboidCollider args={[0.2, 0.5, 0.3]} />
       </RigidBody>
     </>
   );

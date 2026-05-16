@@ -1,12 +1,13 @@
 import { useLevaControls } from './hooks/useLevaControls';
-import { useGLTF } from '@react-three/drei';
+import { useGLTF, useHelper } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
-import { useEffect } from 'react';
-import { DoubleSide, Mesh } from 'three';
+import { useEffect, useRef } from 'react';
+import { DoubleSide, Mesh, PointLight, PointLightHelper } from 'three';
 
 const Environment = () => {
   const { camera } = useThree();
+  const lightRef = useRef<PointLight>({} as PointLight);
 
   const cameraControls = useLevaControls('Camera', {
     cameraPosition: [3.28, 2.38, 5.3] as [number, number, number],
@@ -15,7 +16,7 @@ const Environment = () => {
   const welcomeLampControls = useLevaControls('WelcomeLamp', {
     scale: 0.6,
     position: {
-      value: [-2, 1.5, 2.2] as [x: number, y: number, z: number],
+      value: [-2, 1.2, 2.2] as [x: number, y: number, z: number],
       step: 0.1,
     },
     rotation: {
@@ -23,9 +24,10 @@ const Environment = () => {
       step: 0.1,
     },
     lightPosition: {
-      value: [2.1, -0.4, -0.1] as [x: number, y: number, z: number],
+      value: [1.7, 0.5, -0.1] as [x: number, y: number, z: number],
       step: 0.1,
     },
+    showHelper: false,
     lightColor: '#ffd580',
   });
 
@@ -42,6 +44,8 @@ const Environment = () => {
       }
     });
   }, []);
+
+  useHelper(welcomeLampControls.showHelper ? lightRef : null, PointLightHelper, 0.5, 'hotpink');
 
   return (
     <>
@@ -65,10 +69,12 @@ const Environment = () => {
         </mesh>
         <CuboidCollider args={[1, 2, 1]} />
         <pointLight
+          ref={lightRef}
           shadow-mapSize-width={2048}
           shadow-mapSize-height={2048}
           position={welcomeLampControls.lightPosition}
           intensity={8}
+          scale={0.5}
           distance={15}
           decay={2}
           color={welcomeLampControls.lightColor}
