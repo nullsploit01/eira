@@ -48,6 +48,15 @@ const Player = () => {
     };
   }, [playerAnimation]);
 
+  useEffect(() => {
+    const action = penguinAnimations.actions[penguinControls.animationName];
+    action?.reset().fadeIn(0.5).play();
+
+    return () => {
+      action?.fadeOut(0.5);
+    };
+  }, [penguinControls.animationName]);
+
   useFrame((_, delta) => {
     // const bodyPosition = body.current.translation();
 
