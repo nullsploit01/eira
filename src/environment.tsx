@@ -1,15 +1,15 @@
 import { snowmanAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
-import { useAnimations, useGLTF, useHelper } from '@react-three/drei';
+import { Html, useAnimations, useCursor, useGLTF, useHelper } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DoubleSide, Mesh, PointLight, PointLightHelper } from 'three';
 
 const Environment = () => {
   const { camera } = useThree();
   const lightRef = useRef<PointLight>({} as PointLight);
-
+  const [hovered, setHovered] = useState(false);
   const cameraControls = useLevaControls('Camera', {
     cameraPosition: [3.28, 2, 5.3] as [number, number, number],
   });
@@ -81,7 +81,7 @@ const Environment = () => {
   }, [snowmanControls.animation]);
 
   useHelper(welcomeLampControls.showHelper ? lightRef : null, PointLightHelper, 0.5, 'hotpink');
-
+  useCursor(hovered, 'pointer', 'auto');
   return (
     <>
       <RigidBody type="fixed">
@@ -124,9 +124,45 @@ const Environment = () => {
         colliders={false}
         type="fixed"
       >
-        <mesh>
-          <primitive object={snowMan.scene} />
-        </mesh>
+        <primitive object={snowMan.scene} />
+
+        <Html position={[0, 6, 0]} center distanceFactor={5}>
+          <div
+            onPointerEnter={() => setHovered(true)}
+            onPointerLeave={() => setHovered(false)}
+            onClick={() => console.log('clicked')}
+            style={{
+              position: 'relative',
+              padding: '6px 12px',
+              background: hovered ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.18)',
+              transform: hovered ? 'translateY(-2px) scale(1.05)' : 'translateY(0px) scale(1)',
+              boxShadow: hovered ? '0 0 20px rgba(255,255,255,0.2)' : '0 4px 10px rgba(0,0,0,0.12)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              backdropFilter: 'blur(6px)',
+              borderRadius: '12px',
+              color: 'white',
+              fontSize: '11px',
+              fontWeight: 500,
+              whiteSpace: 'nowrap',
+              textShadow: '0 2px 4px rgba(0,0,0,0.45)',
+            }}
+          >
+            Hey traveler ☃️ Wanna Explore?
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '-4px',
+                left: '18px',
+                width: '8px',
+                height: '8px',
+                background: 'rgba(255,255,255,0.18)',
+                borderRight: '1px solid rgba(255,255,255,0.12)',
+                borderBottom: '1px solid rgba(255,255,255,0.12)',
+                transform: 'rotate(45deg)',
+              }}
+            />
+          </div>
+        </Html>
       </RigidBody>
     </>
   );
