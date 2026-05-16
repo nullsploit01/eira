@@ -147,7 +147,7 @@ const Player = () => {
     }
 
     const keys = getKeys();
-    const impulseStrength = 5 * delta;
+    const impulseStrength = 3 * delta;
 
     const direction = new THREE.Vector3(
       Number(keys.leftward) - Number(keys.rightward),
