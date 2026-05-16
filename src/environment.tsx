@@ -2,13 +2,14 @@ import { snowmanAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
 import { useExperienceStore } from './stores/experience_store';
 import { Html, useAnimations, useCursor, useGLTF, useHelper } from '@react-three/drei';
-import { useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import { useEffect, useRef, useState } from 'react';
-import { DoubleSide, Mesh, PointLight, PointLightHelper } from 'three';
+import { DoubleSide, Group, Mesh, PointLight, PointLightHelper } from 'three';
 
 const Environment = () => {
   const { camera } = useThree();
+  const snowmanRef = useRef<Group>({} as Group);
   const lightRef = useRef<PointLight>({} as PointLight);
   const startGame = useExperienceStore((state) => state.startGame);
   const hasStarted = useExperienceStore((state) => state.hasStarted);
@@ -16,6 +17,24 @@ const Environment = () => {
   const [hovered, setHovered] = useState(false);
   const cameraControls = useLevaControls('Camera', {
     cameraPosition: [3.28, 2, 5.3] as [number, number, number],
+  });
+
+  useFrame((state) => {
+    if (!snowmanRef.current) {
+      return;
+    }
+
+    const snowmanPosition = snowmanRef.current.position;
+
+    const cameraPosition = state.camera.position;
+
+    const angle = Math.atan2(
+      cameraPosition.x - snowmanPosition.x,
+
+      cameraPosition.z - snowmanPosition.z,
+    );
+
+    snowmanRef.current.rotation.y = angle;
   });
 
   const welcomeLampControls = useLevaControls('WelcomeLamp', {
@@ -128,8 +147,7 @@ const Environment = () => {
         colliders={false}
         type="fixed"
       >
-        <primitive object={snowMan.scene} />
-
+        <primitive ref={snowmanRef} object={snowMan.scene} />
         <Html position={[0, 6, 0]} center distanceFactor={5}>
           <div
             onPointerEnter={() => setHovered(true)}
