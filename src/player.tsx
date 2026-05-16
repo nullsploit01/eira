@@ -30,7 +30,7 @@ const Player = () => {
   const penguin = useGLTF('./models/penguin/scene.gltf');
   const penguinAnimations = useAnimations(penguin.animations, penguin.scene);
 
-  const penguinControls = useLevaControls('Penguin', {
+  const penguinControls = useLevaControls('Player', {
     rotation: {
       value: [0, 3.2, 0],
       step: 0.1,
@@ -40,6 +40,8 @@ const Player = () => {
       options: penguinAnimations.names,
       value: playerAnimation,
     },
+
+    cameraFollowsPlayer: false,
   });
 
   useEffect(() => {
@@ -73,7 +75,6 @@ const Player = () => {
     );
 
     cameraOffset.applyQuaternion(quaternion);
-
     cameraPosition.copy(bodyPosition).add(cameraOffset);
 
     const cameraTarget = new THREE.Vector3();
@@ -89,9 +90,10 @@ const Player = () => {
 
     smoothCameraTarget.lerp(cameraTarget, 5 * delta);
 
-    state.camera.position.copy(smoothCameraPosition);
-
-    state.camera.lookAt(smoothCameraTarget);
+    if (penguinControls.cameraFollowsPlayer) {
+      state.camera.position.copy(smoothCameraPosition);
+      state.camera.lookAt(smoothCameraTarget);
+    }
     const keys = getKeys();
 
     const impulse = { x: 0, y: 0, z: 0 };
