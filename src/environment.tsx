@@ -1,5 +1,6 @@
+import { snowmanAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
-import { useGLTF, useHelper } from '@react-three/drei';
+import { useAnimations, useGLTF, useHelper } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import { useEffect, useRef } from 'react';
@@ -10,7 +11,7 @@ const Environment = () => {
   const lightRef = useRef<PointLight>({} as PointLight);
 
   const cameraControls = useLevaControls('Camera', {
-    cameraPosition: [3.28, 2.38, 5.3] as [number, number, number],
+    cameraPosition: [3.28, 2, 5.3] as [number, number, number],
   });
 
   const welcomeLampControls = useLevaControls('WelcomeLamp', {
@@ -36,6 +37,9 @@ const Environment = () => {
   }, [cameraControls]);
 
   const welcomeLamp = useGLTF('./models/welcome_lamp/welcome_lamp.glb');
+  const snowMan = useGLTF('./models/snow_man/snow_man.glb');
+
+  const snowManAnimations = useAnimations(snowMan.animations, snowMan.scene);
 
   useEffect(() => {
     welcomeLamp.scene.traverse((child) => {
@@ -43,7 +47,38 @@ const Environment = () => {
         child.castShadow = true;
       }
     });
+
+    snowMan.scene.traverse((child) => {
+      if (child instanceof Mesh) {
+        child.castShadow = true;
+      }
+    });
   }, []);
+
+  const snowmanControls = useLevaControls('Snowman', {
+    scale: 0.2,
+    position: {
+      value: [3, 0.2, 2] as [x: number, y: number, z: number],
+      step: 0.1,
+    },
+    rotation: {
+      value: [0, -1.9, 0] as [x: number, y: number, z: number],
+      step: 0.1,
+    },
+    animation: {
+      value: snowmanAnimations.jump,
+      options: snowManAnimations.names,
+    },
+  });
+
+  useEffect(() => {
+    const action = snowManAnimations.actions[snowmanControls.animation];
+    action?.reset().fadeIn(0.5).play();
+
+    return () => {
+      action?.fadeOut(0.5);
+    };
+  }, [snowmanControls.animation]);
 
   useHelper(welcomeLampControls.showHelper ? lightRef : null, PointLightHelper, 0.5, 'hotpink');
 
@@ -80,6 +115,18 @@ const Environment = () => {
           color={welcomeLampControls.lightColor}
           castShadow
         />
+      </RigidBody>
+
+      <RigidBody
+        position={snowmanControls.position}
+        rotation={snowmanControls.rotation}
+        scale={snowmanControls.scale}
+        colliders={false}
+        type="fixed"
+      >
+        <mesh>
+          <primitive object={snowMan.scene} />
+        </mesh>
       </RigidBody>
     </>
   );

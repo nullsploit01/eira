@@ -8,3 +8,8 @@ export const playerAnimations = {
   sleep: 'Sleep',
   walk: 'Walk',
 } as const;
+
+export const snowmanAnimations = {
+  idle: 'idle',
+  jump: 'Joints|Joints|ArmatureAction|Joints|ArmatureAction',
+};

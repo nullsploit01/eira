@@ -11,7 +11,7 @@ const AppCanvas = () => {
     debugPhysics: false,
     ambientLight: true,
     ambientLightColor: '#88aaff',
-    ambientLightIntensity: 0.1,
+    ambientLightIntensity: 0.22,
   });
 
   return (
