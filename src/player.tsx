@@ -107,68 +107,33 @@ const Player = () => {
 
     if (direction.length() > 0) {
       // camera direction
-
       const cameraDirection = new THREE.Vector3();
-
       state.camera.getWorldDirection(cameraDirection);
-
-      const cameraAngle = Math.atan2(
-        cameraDirection.x,
-
-        cameraDirection.z,
-      );
-
-      direction.applyAxisAngle(
-        new THREE.Vector3(0, 1, 0),
-
-        cameraAngle,
-      );
+      const cameraAngle = Math.atan2(cameraDirection.x, cameraDirection.z);
+      direction.applyAxisAngle(new THREE.Vector3(0, 1, 0), cameraAngle);
 
       body.current.applyImpulse(
         {
           x: direction.x,
-
           y: 0,
-
           z: direction.z,
         },
-
         true,
       );
 
       // rotate player
-
-      const angle = Math.atan2(
-        direction.x,
-
-        direction.z,
-      );
-
+      const angle = Math.atan2(direction.x, direction.z);
       const targetQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, angle, 0));
-
       const currentRotation = body.current.rotation();
-
       const currentQuaternion = new THREE.Quaternion(
         currentRotation.x,
-
         currentRotation.y,
-
         currentRotation.z,
-
         currentRotation.w,
       );
 
-      currentQuaternion.slerp(
-        targetQuaternion,
-
-        10 * delta,
-      );
-
-      body.current.setRotation(
-        currentQuaternion,
-
-        true,
-      );
+      currentQuaternion.slerp(targetQuaternion, 10 * delta);
+      body.current.setRotation(currentQuaternion, true);
     }
   });
 

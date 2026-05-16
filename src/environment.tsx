@@ -12,13 +12,16 @@ const Environment = () => {
     cameraPosition: [3.28, 2.38, 5.3] as [number, number, number],
   });
 
-  const environmentControls = useLevaControls('Environment', {
-    welcomeLampPosition: {
-      value: [-1.1, 1.4, 2.2] as [x: number, y: number, z: number],
+  const welcomeLampControls = useLevaControls('WelcomeLamp', {
+    scale: 0.6,
+    position: {
+      value: [-2, 1.4, 2.2] as [x: number, y: number, z: number],
       step: 0.1,
     },
-
-    welcomeLampScale: 0.6,
+    rotation: {
+      value: [0, 0, 0] as [x: number, y: number, z: number],
+      step: 0.1,
+    },
   });
 
   useEffect(() => {
@@ -36,12 +39,16 @@ const Environment = () => {
 
         <CuboidCollider args={[50, 0.1, 50]} />
       </RigidBody>
-      <mesh
-        scale={environmentControls.welcomeLampScale}
-        position={environmentControls.welcomeLampPosition}
+      <RigidBody
+        type="fixed"
+        position={welcomeLampControls.position}
+        scale={welcomeLampControls.scale}
+        rotation={welcomeLampControls.rotation}
       >
-        <primitive object={welcomeLamp.scene} />
-      </mesh>
+        <mesh>
+          <primitive object={welcomeLamp.scene} />
+        </mesh>
+      </RigidBody>
     </>
   );
 };
