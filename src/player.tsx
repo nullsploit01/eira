@@ -86,57 +86,63 @@ const Player = () => {
     cameraTarget.copy(bodyPosition);
 
     cameraTarget.y += 0.25;
-
-    smoothCameraPosition.lerp(
-      cameraPosition,
-
-      5 * delta,
-    );
-
+    smoothCameraPosition.lerp(cameraPosition, 5 * delta);
     smoothCameraTarget.lerp(cameraTarget, 5 * delta);
 
     if (playerControls.cameraFollowsPlayer) {
       state.camera.position.copy(smoothCameraPosition);
       state.camera.lookAt(smoothCameraTarget);
     }
+
     const keys = getKeys();
-
-    const impulse = { x: 0, y: 0, z: 0 };
-    const torque = { x: 0, y: 0, z: 0 };
-
     const impulseStrength = 5 * delta;
-    const torqueStrength = 0.2 * delta;
-    if (keys['forward']) {
-      impulse.z -= impulseStrength;
-    }
 
-    if (keys['backward']) {
-      impulse.z += impulseStrength;
-      torque.x += torqueStrength;
-    }
+    const direction = new THREE.Vector3(
+      Number(keys.leftward) - Number(keys.rightward),
+      0,
+      Number(keys.forward) - Number(keys.backward),
+    );
 
-    if (keys['leftward']) {
-      impulse.x -= impulseStrength;
-      torque.z -= torqueStrength;
-    }
+    direction.normalize().multiplyScalar(impulseStrength);
 
-    if (keys['rightward']) {
-      impulse.x += impulseStrength;
-      torque.z += torqueStrength;
-    }
+    if (direction.length() > 0) {
+      // camera direction
 
-    body.current.applyImpulse(impulse, true);
+      const cameraDirection = new THREE.Vector3();
 
-    // ROTATION
+      state.camera.getWorldDirection(cameraDirection);
 
-    const velocity = body.current.linvel();
+      const cameraAngle = Math.atan2(
+        cameraDirection.x,
 
-    const direction = new THREE.Vector3(velocity.x, 0, velocity.z);
+        cameraDirection.z,
+      );
 
-    if (direction.length() > 0.01) {
-      direction.normalize();
+      direction.applyAxisAngle(
+        new THREE.Vector3(0, 1, 0),
 
-      const angle = Math.atan2(direction.x, direction.z);
+        cameraAngle,
+      );
+
+      body.current.applyImpulse(
+        {
+          x: direction.x,
+
+          y: 0,
+
+          z: direction.z,
+        },
+
+        true,
+      );
+
+      // rotate player
+
+      const angle = Math.atan2(
+        direction.x,
+
+        direction.z,
+      );
 
       const targetQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, angle, 0));
 
@@ -144,14 +150,25 @@ const Player = () => {
 
       const currentQuaternion = new THREE.Quaternion(
         currentRotation.x,
+
         currentRotation.y,
+
         currentRotation.z,
+
         currentRotation.w,
       );
 
-      currentQuaternion.slerp(targetQuaternion, 0.1);
+      currentQuaternion.slerp(
+        targetQuaternion,
 
-      body.current.setRotation(currentQuaternion, true);
+        10 * delta,
+      );
+
+      body.current.setRotation(
+        currentQuaternion,
+
+        true,
+      );
     }
   });
 
