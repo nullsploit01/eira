@@ -1,13 +1,25 @@
+import { playerAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
 import { useAnimations, useGLTF, useKeyboardControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { RapierRigidBody, RigidBody } from '@react-three/rapier';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Euler, Quaternion, Vector3 } from 'three';
 
 const Player = () => {
   const [subscribeKeys, getKeys] = useKeyboardControls();
-  console.log(subscribeKeys);
+  const [playerAnimation, setPlayerAnimation] = useState<string>(playerAnimations.idle);
+
+  useEffect(() => {
+    const unsubscribe = subscribeKeys(
+      (state) => state.forward || state.backward || state.leftward || state.rightward,
+      (pressed) => {
+        setPlayerAnimation(pressed ? playerAnimations.walk : playerAnimations.idle);
+      },
+    );
+
+    return unsubscribe;
+  }, [subscribeKeys]);
 
   //   const { rapier, world } = useRapier();
   const body = useRef<RapierRigidBody>({} as RapierRigidBody);
@@ -23,18 +35,18 @@ const Player = () => {
 
     animationName: {
       options: penguinAnimations.names,
-      value: 'Walk',
+      value: playerAnimation,
     },
   });
 
   useEffect(() => {
-    const action = penguinAnimations.actions[penguinControls.animationName];
+    const action = penguinAnimations.actions[playerAnimation];
     action?.reset().fadeIn(0.5).play();
 
     return () => {
       action?.fadeOut(0.5);
     };
-  }, [penguinControls.animationName]);
+  }, [playerAnimation]);
 
   useFrame((_, delta) => {
     // const bodyPosition = body.current.translation();
