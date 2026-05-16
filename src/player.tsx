@@ -59,6 +59,14 @@ const Player = () => {
   }, [playerAnimation]);
 
   useEffect(() => {
+    penguin.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     if (!playerControls.cameraFollowsPlayer) {
       return;
     }

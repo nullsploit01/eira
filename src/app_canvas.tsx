@@ -9,6 +9,9 @@ const AppCanvas = () => {
   const generalControls = useLevaControls('General', {
     color: '#212122',
     debugPhysics: false,
+    ambientLight: true,
+    ambientLightColor: '#88aaff',
+    ambientLightIntensity: 0.1,
   });
 
   return (
@@ -22,7 +25,9 @@ const AppCanvas = () => {
         }}
       >
         <Physics debug={generalControls.debugPhysics}>
-          <ambientLight intensity={2} />
+          {generalControls.ambientLight && (
+            <ambientLight intensity={generalControls.ambientLightIntensity} />
+          )}
           <color args={[generalControls.color]} attach={'background'} />
           <Experience />
           <OrbitControls />
