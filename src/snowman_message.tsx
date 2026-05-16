@@ -11,7 +11,7 @@ const SnowmanMessage = () => {
   useCursor(hovered, 'pointer');
 
   return (
-    <Html position={[0, 6, 0]} center distanceFactor={5}>
+    <Html position={[0, 6, 0]} center distanceFactor={7}>
       <div
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}

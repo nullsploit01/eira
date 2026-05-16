@@ -3,3 +3,5 @@
 "A Welcoming Sign" (https://skfb.ly/6SN7B) by Raneman is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 
 "Snow Man" (https://skfb.ly/6WKLo) by Erik H is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+"Igloo" (https://skfb.ly/oBoTZ) by Vera4Art is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).

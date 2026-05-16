@@ -17,6 +17,6 @@ export const useSnowmanLookAtCamera = (ref: RefObject<Group | null>) => {
       cameraPosition.z - snowmanPosition.z,
     );
 
-    ref.current.rotation.y += (angle - ref.current.rotation.y) * 5 * delta;
+    ref.current.rotation.y += (angle - ref.current.rotation.y) * 2 * delta * Math.PI;
   });
 };
