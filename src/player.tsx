@@ -15,7 +15,9 @@ const Player = () => {
 
   const targetRotation = useRef(0);
   const currentRotationY = useRef(0);
-
+  const isTransitioning = useRef(false);
+  const transitionProgress = useRef(0);
+  const currentLookAt = useRef(new THREE.Vector3());
   useEffect(() => {
     const unsubscribe = subscribeKeys(
       (state) => state.forward || state.backward || state.leftward || state.rightward,
@@ -57,6 +59,25 @@ const Player = () => {
   }, [playerAnimation]);
 
   useEffect(() => {
+    if (!playerControls.cameraFollowsPlayer) {
+      return;
+    }
+
+    isTransitioning.current = true;
+    transitionProgress.current = 0;
+
+    const action = penguinAnimations.actions[playerAnimations.shake];
+    if (!action) {
+      return;
+    }
+
+    action.clampWhenFinished = true;
+    action.reset().fadeIn(0.5);
+    action.setLoop(THREE.LoopRepeat, 3);
+    action.play();
+  }, [playerControls.cameraFollowsPlayer]);
+
+  useEffect(() => {
     const action = penguinAnimations.actions[playerControls.animationName];
     action?.reset().fadeIn(0.5).play();
 
@@ -88,8 +109,33 @@ const Player = () => {
     smoothCameraTarget.lerp(cameraTarget, 5 * delta);
 
     if (playerControls.cameraFollowsPlayer) {
-      state.camera.position.copy(smoothCameraPosition);
-      state.camera.lookAt(smoothCameraTarget);
+      if (isTransitioning.current) {
+        const transitionSpeed = 2.5;
+
+        const direction = new THREE.Vector3().subVectors(
+          smoothCameraPosition,
+          state.camera.position,
+        );
+
+        const distance = direction.length();
+
+        if (distance > 0.1) {
+          direction.normalize();
+
+          state.camera.position.add(direction.multiplyScalar(transitionSpeed * delta));
+        } else {
+          state.camera.position.copy(smoothCameraPosition);
+          currentLookAt.current.copy(smoothCameraTarget);
+          isTransitioning.current = false;
+        }
+
+        currentLookAt.current.lerpVectors(currentLookAt.current, smoothCameraTarget, 2 * delta);
+
+        state.camera.lookAt(currentLookAt.current);
+      } else {
+        state.camera.position.lerp(smoothCameraPosition, 5 * delta);
+        state.camera.lookAt(smoothCameraTarget);
+      }
     }
 
     const keys = getKeys();
