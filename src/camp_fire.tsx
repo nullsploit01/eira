@@ -1,11 +1,13 @@
 import { useLevaControls } from './hooks/useLevaControls';
 import { useAnimations, useGLTF } from '@react-three/drei';
-import { useEffect } from 'react';
+import { useFrame } from '@react-three/fiber';
+import { useEffect, useRef } from 'react';
+import type { PointLight } from 'three';
 
 const CampFire = () => {
   const model = useGLTF('./models/camp_fire/camp_fire.glb');
   const animations = useAnimations(model.animations, model.scene);
-
+  const lightRef = useRef<PointLight>({} as PointLight);
   const controls = useLevaControls('CampFire', {
     scale: 1.5,
     position: {
@@ -32,10 +34,27 @@ const CampFire = () => {
     };
   }, [controls.animation]);
 
+  useFrame((state) => {
+    lightRef.current.intensity =
+      4 + Math.sin(state.clock.elapsedTime * 8) * 0.4 + Math.random() * 0.2;
+  });
+
   return (
     <>
       <group position={controls.position} rotation={controls.rotation}>
-        <primitive object={model.scene} />
+        <mesh scale={0.7}>
+          <primitive object={model.scene} />
+        </mesh>
+        <pointLight
+          castShadow
+          ref={lightRef}
+          position={[0, 1, 0]}
+          intensity={4}
+          distance={8}
+          decay={2}
+          color="#ff9e57"
+        />
+        <pointLight position={[0, 0.3, 0]} intensity={2} distance={4} decay={2} color="#ff5a36" />
       </group>
     </>
   );
