@@ -1,4 +1,5 @@
 import CameraController from './camera_controller';
+import CampFire from './camp_fire';
 import Ground from './ground';
 import Igloo from './igloo';
 import Snowman from './snowman';
@@ -10,6 +11,7 @@ const Environment = () => {
       <CameraController />
       <Ground />
       <Igloo />
+      <CampFire />
       <WelcomeLamp />
       <Snowman />
     </>
