@@ -1,4 +1,5 @@
 import { useLevaControls } from './hooks/useLevaControls';
+import WoodenSign from './wooden_sign';
 import { useAnimations, useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
@@ -55,6 +56,13 @@ const CampFire = () => {
           color="#ff9e57"
         />
         <pointLight position={[0, 0.3, 0]} intensity={2} distance={4} decay={2} color="#ff5a36" />
+        <WoodenSign
+          title="Fun Fact"
+          message="sup"
+          scale={0.5}
+          position={[-1.5, 0.5, 1.5]}
+          rotation={[0, 0.6, 0]}
+        />
       </group>
     </>
   );

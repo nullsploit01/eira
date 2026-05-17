@@ -1,4 +1,5 @@
 import { useLevaControls } from './hooks/useLevaControls';
+import WoodenSign from './wooden_sign';
 import { useGLTF, useHelper } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
 import { useEffect, useRef } from 'react';
@@ -7,7 +8,6 @@ import { Mesh, type PointLight, PointLightHelper } from 'three';
 const Igloo = () => {
   const igloo = useGLTF('./models/igloo/igloo.glb');
   const lantern = useGLTF('./models/lantern/lantern.glb');
-  const woodenSign = useGLTF('./models/wooden_sign/wooden_sign.glb');
   const lightRef = useRef<PointLight>({} as PointLight);
 
   useEffect(() => {
@@ -18,11 +18,6 @@ const Igloo = () => {
       }
     });
     lantern.scene.traverse((child) => {
-      if (child instanceof Mesh) {
-        child.castShadow = true;
-      }
-    });
-    woodenSign.scene.traverse((child) => {
       if (child instanceof Mesh) {
         child.castShadow = true;
       }
@@ -75,9 +70,13 @@ const Igloo = () => {
           decay={2}
           color={controls.lightColor}
         />
-        <mesh scale={0.5} position={[-2.2, 0.5, 2.3]} rotation-y={0.6}>
-          <primitive object={woodenSign.scene} />
-        </mesh>
+        <WoodenSign
+          title="About Me!"
+          message="sup"
+          scale={0.5}
+          position={[-2.2, 0.5, 2.3]}
+          rotation={[0, 0.6, 0]}
+        />
       </group>
     </>
   );
