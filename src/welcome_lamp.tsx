@@ -57,8 +57,8 @@ const WelcomeLamp = () => {
       <pointLight
         ref={lightRef}
         castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
+        shadow-mapSize-width={1024}
+        shadow-mapSize-height={1024}
         position={controls.lightPosition}
         intensity={8}
         distance={15}

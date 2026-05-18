@@ -17,6 +17,7 @@
     "@react-three/rapier": "^2.2.0",
     "@types/three": "^0.184.1",
     "leva": "^0.10.1",
+    "r3f-perf": "^7.2.3",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "three": "^0.184.0",

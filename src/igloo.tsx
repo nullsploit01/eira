@@ -62,8 +62,8 @@ const Igloo = () => {
         <pointLight
           ref={lightRef}
           castShadow
-          shadow-mapSize-width={2048}
-          shadow-mapSize-height={2048}
+          shadow-mapSize-width={1024}
+          shadow-mapSize-height={1024}
           position={controls.lightPosition}
           intensity={8}
           distance={15}
@@ -71,7 +71,7 @@ const Igloo = () => {
           color={controls.lightColor}
         />
         <WoodenSign
-          title="About Me!"
+          title="About Meeeee!"
           message="sup"
           scale={0.5}
           position={[-2.2, 0.5, 2.3]}

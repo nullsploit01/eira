@@ -1,16 +1,14 @@
-import { Html, useCursor, useGLTF } from '@react-three/drei';
+import { Clone, Html, useCursor, useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
+import { RigidBody } from '@react-three/rapier';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 type WoodenSignProps = {
   title: string;
   message: string;
-
   position?: [number, number, number];
-
   rotation?: [number, number, number];
-
   scale?: number;
 };
 
@@ -22,7 +20,7 @@ const WoodenSign = ({
   scale = 0.5,
 }: WoodenSignProps) => {
   const groupRef = useRef<THREE.Group>(null);
-  const signRef = useRef<THREE.Object3D>(null);
+  const signRef = useRef<THREE.Group>(null);
   const glowLightRef = useRef<THREE.PointLight>(null);
   const [hovered, setHovered] = useState(false);
   const [active, setActive] = useState(false);
@@ -60,11 +58,8 @@ const WoodenSign = ({
     woodenSign.scene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         const material = child.material as THREE.MeshStandardMaterial;
-
         const emissiveIntensity = active || hovered ? 0.25 : 0;
-
         material.emissive = new THREE.Color('#ffcc88');
-
         material.emissiveIntensity = THREE.MathUtils.lerp(
           material.emissiveIntensity,
           emissiveIntensity,
@@ -76,14 +71,15 @@ const WoodenSign = ({
 
   return (
     <group ref={groupRef} position={position} rotation={rotation} scale={scale}>
-      <primitive
-        ref={signRef}
-        object={woodenSign.scene}
-        onClick={() => setActive(!active)}
-        onPointerEnter={() => setHovered(true)}
-        onPointerLeave={() => setHovered(false)}
-      />
-
+      <RigidBody type="fixed">
+        <Clone
+          ref={signRef}
+          object={woodenSign.scene}
+          onClick={() => setActive(!active)}
+          onPointerEnter={() => setHovered(true)}
+          onPointerLeave={() => setHovered(false)}
+        />
+      </RigidBody>
       <pointLight
         ref={glowLightRef}
         position={[0, 1, 0.3]}
@@ -94,7 +90,7 @@ const WoodenSign = ({
       />
 
       {!active && (
-        <Html position={[0, 1.2, 0]} center distanceFactor={12}>
+        <Html occlude position={[0, 1.2, 0]} center distanceFactor={12}>
           <div
             style={{
               padding: '4px 10px',
