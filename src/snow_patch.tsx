@@ -28,7 +28,7 @@ const SnowPatch = ({ position = [0, 0, 0], scale = 1, count = 8 }: SnowPatchProp
           receiveShadow
         >
           <circleGeometry args={[patch.scale, 16]} />
-          <meshStandardMaterial opacity={0.75} color="#f5f7fb" transparent roughness={1} />
+          <meshStandardMaterial opacity={0.15} color="#cfd8e6" transparent roughness={1} />
         </mesh>
       ))}
     </group>

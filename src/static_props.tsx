@@ -1,5 +1,4 @@
 import { useLevaControls } from './hooks/useLevaControls';
-import SnowPatch from './snow_patch';
 import Tree from './tree';
 import { useMemo } from 'react';
 
@@ -23,15 +22,6 @@ const StaticProps = () => {
       <Tree scale={randomScale} position={[4, 0, 13]} />
       <Tree scale={randomScale} position={[12, 0, 11]} />
       {controls.enableFog && <fog attach="fog" args={[controls.fogColor, 10, 45]} />}
-
-      <SnowPatch position={[2, 0.01, -1]} scale={0.5} />
-      <SnowPatch position={[3, 0.01, 3]} scale={1.5} />
-      <SnowPatch position={[12, 0.01, 3]} scale={1.5} />
-      <SnowPatch position={[5, 0.01, 1]} scale={1.5} />
-      <SnowPatch position={[3, 0.01, 12]} scale={2.5} />
-      <SnowPatch position={[12, 0.01, 7]} scale={1} />
-      <SnowPatch position={[-5, 0.01, 7]} scale={1} />
-      <SnowPatch position={[-12, 0.01, 7]} scale={1} />
     </>
   );
 };
