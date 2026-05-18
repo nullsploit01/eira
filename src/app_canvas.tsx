@@ -1,6 +1,7 @@
 import Experience from './experience';
 import { useLevaControls } from './hooks/useLevaControls';
 import KeyboardControlMapping from './keyboard_controls';
+import PostProcessing from './post_processing';
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Physics } from '@react-three/rapier';
@@ -28,13 +29,18 @@ const AppCanvas = () => {
           far: 45,
         }}
       >
+        <PostProcessing />
         <Perf position="top-left" />
         <Physics debug={generalControls.debugPhysics}>
           {generalControls.ambientLight && (
-            <ambientLight intensity={generalControls.ambientLightIntensity} />
+            <ambientLight
+              shadow-normalBias={0.02}
+              intensity={generalControls.ambientLightIntensity}
+            />
           )}
           {generalControls.directionalLight && (
             <directionalLight
+              shadow-normalBias={0.02}
               intensity={generalControls.directionalLightIntensity}
               color={generalControls.directionalLightColor}
             />

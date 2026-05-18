@@ -1,5 +1,6 @@
 import { useLevaControls } from './hooks/useLevaControls';
 import Tree from './tree';
+import { Sparkles } from '@react-three/drei';
 import { useMemo } from 'react';
 
 const StaticProps = () => {
@@ -22,6 +23,16 @@ const StaticProps = () => {
       <Tree scale={randomScale} position={[4, 0, 13]} />
       <Tree scale={randomScale} position={[12, 0, 11]} />
       {controls.enableFog && <fog attach="fog" args={[controls.fogColor, 10, 45]} />}
+
+      <Sparkles
+        position={[0, 2, 0]}
+        count={200}
+        scale={[40, 10, 40]}
+        size={2}
+        speed={0.2}
+        opacity={0.5}
+        color="#ffffff"
+      />
     </>
   );
 };

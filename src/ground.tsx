@@ -17,11 +17,11 @@ const Ground = () => {
   return (
     <RigidBody type="fixed">
       <mesh receiveShadow rotation={[-Math.PI * 0.5, 0, 0]}>
-        <planeGeometry args={[50, 50]} />
+        <planeGeometry args={[40, 40]} />
         <meshStandardMaterial {...texture} side={DoubleSide} />
       </mesh>
 
-      <CuboidCollider args={[25, 0.1, 25]} />
+      <CuboidCollider args={[20, 0.1, 20]} />
     </RigidBody>
   );
 };
