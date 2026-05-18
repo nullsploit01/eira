@@ -22,6 +22,18 @@ const StaticProps = () => {
       <Tree scale={randomScale} position={[-6, 0, -1.5]} />
       <Tree scale={randomScale} position={[4, 0, 13]} />
       <Tree scale={randomScale} position={[12, 0, 11]} />
+      <Tree scale={randomScale} position={[17, 0, -11]} />
+      <Tree scale={randomScale} position={[12, 0, -8]} />
+      <Tree scale={randomScale} position={[12, 0, -8]} />
+      <Tree scale={randomScale} position={[8, 0, -8.3]} />
+      <Tree scale={randomScale} position={[4, 0, -8.7]} />
+      <Tree scale={randomScale} position={[0, 0, -9.7]} />
+      <Tree scale={randomScale} position={[-4.1, 0, -13]} />
+      <Tree scale={randomScale} position={[-8.3, 0, -10.7]} />
+      <Tree scale={randomScale} position={[-13.3, 0, -11.7]} />
+      <Tree scale={randomScale} position={[-16.3, 0, -7.7]} />
+      <Tree scale={randomScale} position={[-16.3, 0, -12.7]} />
+      <Tree scale={randomScale} position={[-12.3, 0, -7.7]} />
       {controls.enableFog && <fog attach="fog" args={[controls.fogColor, 10, 45]} />}
 
       <Sparkles
