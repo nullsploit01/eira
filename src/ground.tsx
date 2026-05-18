@@ -9,18 +9,19 @@ const Ground = () => {
     roughnessMap: '/textures/snow/snow_02_arm_1k.png',
   });
 
-  texture.map.repeat.set(20, 20);
+  texture.map.rotation = Math.PI * 0.15;
+  texture.map.center.set(0.5, 0.5);
   texture.map.wrapS = RepeatWrapping;
   texture.map.wrapT = RepeatWrapping;
 
   return (
     <RigidBody type="fixed">
       <mesh receiveShadow rotation={[-Math.PI * 0.5, 0, 0]}>
-        <planeGeometry args={[100, 100]} />
+        <planeGeometry args={[50, 50]} />
         <meshStandardMaterial {...texture} side={DoubleSide} />
       </mesh>
 
-      <CuboidCollider args={[50, 0.1, 50]} />
+      <CuboidCollider args={[25, 0.1, 25]} />
     </RigidBody>
   );
 };
