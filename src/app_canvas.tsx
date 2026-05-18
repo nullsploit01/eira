@@ -13,6 +13,9 @@ const AppCanvas = () => {
     ambientLight: true,
     ambientLightColor: '#88aaff',
     ambientLightIntensity: 0.22,
+    directionalLight: true,
+    directionalLightIntensity: 0.15,
+    directionalLightColor: '#749ceb',
   });
 
   return (
@@ -29,6 +32,12 @@ const AppCanvas = () => {
         <Physics debug={generalControls.debugPhysics}>
           {generalControls.ambientLight && (
             <ambientLight intensity={generalControls.ambientLightIntensity} />
+          )}
+          {generalControls.directionalLight && (
+            <directionalLight
+              intensity={generalControls.directionalLightIntensity}
+              color={generalControls.directionalLightColor}
+            />
           )}
           <color args={[generalControls.color]} attach={'background'} />
           <Experience />

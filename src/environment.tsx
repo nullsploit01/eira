@@ -3,8 +3,7 @@ import CampFire from './camp_fire';
 import Ground from './ground';
 import Igloo from './igloo';
 import Snowman from './snowman';
-import Tree from './tree';
-import WelcomeLamp from './welcome_lamp';
+import StaticProps from './static_props';
 
 const Environment = () => {
   return (
@@ -13,9 +12,9 @@ const Environment = () => {
       <Ground />
       <Igloo />
       <CampFire />
-      <WelcomeLamp />
+      {/* <WelcomeLamp /> */}
       <Snowman />
-      <Tree scale={0.01} position={[6, 0, 2]} />
+      <StaticProps />
     </>
   );
 };
