@@ -1,6 +1,6 @@
+import Fence from './fence';
 import { useLevaControls } from './hooks/useLevaControls';
 import Tree from './tree';
-import { Sparkles } from '@react-three/drei';
 import { useMemo } from 'react';
 
 const StaticProps = () => {
@@ -36,15 +36,38 @@ const StaticProps = () => {
       <Tree scale={randomScale} position={[-12.3, 0, -7.7]} />
       {controls.enableFog && <fog attach="fog" args={[controls.fogColor, 10, 45]} />}
 
-      <Sparkles
-        position={[0, 2, 0]}
-        count={200}
-        scale={[40, 10, 40]}
-        size={2}
-        speed={0.2}
-        opacity={0.5}
-        color="#ffffff"
-      />
+      {Array.from({ length: 19 }).map((_, index) => (
+        <Fence key={index} rotation={[0, -0.3, 0]} position={[-18, 0, 17 - index * 2]} />
+      ))}
+
+      {Array.from({ length: 19 }).map((_, index) => (
+        <Fence key={index} rotation={[0, -1.9, 0]} position={[-17 + index * 2, 0, 18.5]} />
+      ))}
+
+      {Array.from({ length: 19 }).map((_, index) => (
+        <Fence key={index} rotation={[0, 1.2, 0]} position={[-19 + index * 2, 0, -18.5]} />
+      ))}
+
+      {Array.from({ length: 19 }).map((_, index) => (
+        <Fence key={index} rotation={[0, 2.8, 0]} position={[19, 0, -17 + index * 2]} />
+      ))}
+
+      {/* <Fence rotation={[0, 2.8, 0]} position={[19, 0, -17]} />
+      <Fence rotation={[0, 2.8, 0]} position={[19, 0, -15]} />
+      <Fence rotation={[0, 2.8, 0]} position={[19, 0, -13]} /> */}
+
+      {/* <Fence rotation={[0, 1.2, 0]} position={[-19, 0, -18.5]} />
+      <Fence rotation={[0, 1.2, 0]} position={[-17, 0, -18.5]} />
+      <Fence rotation={[0, 1.2, 0]} position={[-15, 0, -18.5]} /> */}
+
+      {/* <Fence rotation={[0, -1.9, 0]} position={[-18, 0, 18.5]} />
+      <Fence rotation={[0, -1.9, 0]} position={[-16, 0, 18.5]} />
+      <Fence rotation={[0, -1.9, 0]} position={[-14, 0, 18.5]} /> */}
+
+      {/* <Fence rotation={[0, -0.3, 0]} position={[-18, 0, 17]} />
+      <Fence rotation={[0, -0.3, 0]} position={[-18, 0, 15]} />
+      <Fence rotation={[0, -0.3, 0]} position={[-18, 0, 13]} />
+      <Fence rotation={[0, -0.3, 0]} position={[-18, 0, 11]} /> */}
     </>
   );
 };

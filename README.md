@@ -9,3 +9,5 @@
 "Stylized Lantern" (https://skfb.ly/6FQqq) by Izzy is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 
 "Pine tree" (https://skfb.ly/6VKKJ) by Andriy Shekh is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
+"Fence (Wood)" (https://skfb.ly/REop) by trentspi is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
