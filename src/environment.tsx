@@ -1,5 +1,7 @@
 import CameraController from './camera_controller';
 import CampFire from './camp_fire';
+import { ghostAnimations } from './constants/animations';
+import Ghost from './ghost';
 import Ground from './ground';
 import Igloo from './igloo';
 import Snowman from './snowman';
@@ -15,6 +17,7 @@ const Environment = () => {
       <Igloo />
       <CampFire />
       {/* <WelcomeLamp /> */}
+      <Ghost animationName={ghostAnimations.hurt} />
       <Snowman />
       <StaticProps />
     </>
