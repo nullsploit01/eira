@@ -71,8 +71,8 @@ const Igloo = () => {
           color={controls.lightColor}
         />
         <WoodenSign
-          title="About Meeeee!"
-          message="sup"
+          title="About Me"
+          message="Just a guy who loves to code."
           scale={0.5}
           position={[-2.2, 0.5, 2.3]}
           rotation={[0, 0.6, 0]}

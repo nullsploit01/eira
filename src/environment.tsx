@@ -5,8 +5,7 @@ import Ground from './ground';
 import Igloo from './igloo';
 import Snowman from './snowman';
 import StaticProps from './static_props';
-
-// import WelcomeLamp from './welcome_lamp';
+import WelcomeLamp from './welcome_lamp';
 
 const Environment = () => {
   return (
@@ -15,7 +14,7 @@ const Environment = () => {
       <Ground />
       <Igloo />
       <CampFire />
-      {/* <WelcomeLamp /> */}
+      <WelcomeLamp />
       <Snowman />
       <StaticProps />
       <DynamicProps />
