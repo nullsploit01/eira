@@ -11,6 +11,7 @@ const Player = () => {
   const hasStarted = useExperienceStore((state) => state.hasStarted);
   const currentPlayerAnimation = useExperienceStore((state) => state.playerAnimation);
   const setCurrentPlayerAnimation = useExperienceStore((state) => state.setPlayerAnimation);
+  const canMovePlayer = useExperienceStore((state) => state.canMovePlayer);
 
   const [subscribeKeys, getKeys] = useKeyboardControls();
   const body = useRef<RapierRigidBody>({} as RapierRigidBody);
@@ -144,7 +145,7 @@ const Player = () => {
   };
 
   const updateMovement = (state: RootState, delta: number) => {
-    if (isTransitioning.current) {
+    if (isTransitioning.current || !canMovePlayer || !hasStarted) {
       return;
     }
 

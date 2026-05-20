@@ -1,3 +1,4 @@
+import { useExperienceStore } from './stores/experience_store';
 import { Clone, Html, useCursor, useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
@@ -26,6 +27,7 @@ const WoodenSign = ({
   const glowLightRef = useRef<THREE.PointLight>(null);
   const [hovered, setHovered] = useState(false);
   const [active, setActive] = useState(false);
+  const setCanMovePlayer = useExperienceStore((state) => state.setCanMovePlayer);
 
   useCursor(hovered, 'pointer');
 
@@ -79,7 +81,8 @@ const WoodenSign = ({
           object={woodenSign.scene}
           onClick={() => {
             onClick();
-            setActive(!active);
+            setCanMovePlayer(false);
+            setActive(true);
           }}
           onPointerEnter={() => setHovered(true)}
           onPointerLeave={() => setHovered(false)}
@@ -278,7 +281,10 @@ const WoodenSign = ({
             </div>
 
             <button
-              onClick={() => setActive(false)}
+              onClick={() => {
+                setCanMovePlayer(true);
+                setActive(false);
+              }}
               style={{
                 marginTop: '24px',
                 background: 'transparent',
