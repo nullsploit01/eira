@@ -1,4 +1,6 @@
+import { playerAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
+import { useExperienceStore } from './stores/experience_store';
 import WoodenSign from './wooden_sign';
 import { useAnimations, useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
@@ -6,6 +8,8 @@ import { useEffect, useRef } from 'react';
 import type { PointLight } from 'three';
 
 const CampFire = () => {
+  const setCurrentPlayerAnimation = useExperienceStore((state) => state.setPlayerAnimation);
+
   const model = useGLTF('./models/camp_fire/camp_fire.glb');
   const animations = useAnimations(model.animations, model.scene);
   const lightRef = useRef<PointLight>({} as PointLight);
@@ -27,7 +31,6 @@ const CampFire = () => {
 
   useEffect(() => {
     const action = animations.actions[controls.animation];
-
     action?.reset().fadeIn(0.5).play();
 
     return () => {
@@ -39,6 +42,10 @@ const CampFire = () => {
     lightRef.current.intensity =
       4 + Math.sin(state.clock.elapsedTime * 8) * 0.4 + Math.random() * 0.2;
   });
+
+  const handleSignClick = () => {
+    setCurrentPlayerAnimation(playerAnimations.sit1);
+  };
 
   return (
     <>
@@ -57,6 +64,7 @@ const CampFire = () => {
         />
         <pointLight position={[0, 0.3, 0]} intensity={2} distance={4} decay={2} color="#ff5a36" />
         <WoodenSign
+          onClick={handleSignClick}
           title="Fun Fact"
           message="sup"
           scale={0.5}

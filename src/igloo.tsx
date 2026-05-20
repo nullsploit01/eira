@@ -1,4 +1,6 @@
+import { playerAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
+import { useExperienceStore } from './stores/experience_store';
 import WoodenSign from './wooden_sign';
 import { useGLTF, useHelper } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
@@ -9,6 +11,7 @@ const Igloo = () => {
   const igloo = useGLTF('./models/igloo/igloo.glb');
   const lantern = useGLTF('./models/lantern/lantern.glb');
   const lightRef = useRef<PointLight>({} as PointLight);
+  const setCurrentPlayerAnimation = useExperienceStore((state) => state.setPlayerAnimation);
 
   useEffect(() => {
     igloo.scene.traverse((child) => {
@@ -46,7 +49,9 @@ const Igloo = () => {
   });
 
   useHelper(controls.showLightHelper ? lightRef : null, PointLightHelper, 0.1, 'hotpink');
-
+  const handleSignClick = () => {
+    setCurrentPlayerAnimation(playerAnimations.sit1);
+  };
   return (
     <>
       <group rotation={controls.rotation} position={controls.position}>
@@ -71,6 +76,7 @@ const Igloo = () => {
           color={controls.lightColor}
         />
         <WoodenSign
+          onClick={handleSignClick}
           title="About Me"
           message="Just a guy who loves to code."
           scale={0.5}

@@ -10,6 +10,7 @@ type WoodenSignProps = {
   position?: [number, number, number];
   rotation?: [number, number, number];
   scale?: number;
+  onClick?: () => void;
 };
 
 const WoodenSign = ({
@@ -18,6 +19,7 @@ const WoodenSign = ({
   position = [0, 0, 0],
   rotation = [0, 0, 0],
   scale = 0.5,
+  onClick = () => {},
 }: WoodenSignProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const signRef = useRef<THREE.Group>(null);
@@ -75,7 +77,10 @@ const WoodenSign = ({
         <Clone
           ref={signRef}
           object={woodenSign.scene}
-          onClick={() => setActive(!active)}
+          onClick={() => {
+            onClick();
+            setActive(true);
+          }}
           onPointerEnter={() => setHovered(true)}
           onPointerLeave={() => setHovered(false)}
         />

@@ -14,9 +14,9 @@ const DynamicProps = () => {
         position={[0, 2, 0]}
         count={200}
         scale={[40, 10, 40]}
-        size={2}
+        size={3}
         speed={0.2}
-        opacity={0.5}
+        opacity={1}
         color="#ffffff"
       />
     </>

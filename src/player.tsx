@@ -9,29 +9,20 @@ import * as THREE from 'three';
 
 const Player = () => {
   const hasStarted = useExperienceStore((state) => state.hasStarted);
+  const currentPlayerAnimation = useExperienceStore((state) => state.playerAnimation);
+  const setCurrentPlayerAnimation = useExperienceStore((state) => state.setPlayerAnimation);
 
   const [subscribeKeys, getKeys] = useKeyboardControls();
-
-  const [playerAnimation, setPlayerAnimation] = useState<string>(playerAnimations.sleep);
-
   const body = useRef<RapierRigidBody>({} as RapierRigidBody);
-
   const [smoothCameraPosition] = useState(() => new THREE.Vector3(10, 10, 10));
-
   const [smoothCameraTarget] = useState(() => new THREE.Vector3());
-
   const currentLookAt = useRef(new THREE.Vector3());
-
   const isTransitioning = useRef(false);
-
   const targetRotation = useRef(0);
-
   const currentRotationY = useRef(0);
 
   const penguin = useGLTF('./models/penguin/scene.gltf');
-
   const penguinAnimations = useAnimations(penguin.animations, penguin.scene);
-
   const playerControls = useLevaControls('Player', {
     position: {
       value: [0, 1, 2.3],
@@ -40,7 +31,7 @@ const Player = () => {
 
     animationName: {
       options: penguinAnimations.names,
-      value: playerAnimation,
+      value: currentPlayerAnimation,
     },
 
     cameraFollowsPlayer: false,
@@ -50,7 +41,7 @@ const Player = () => {
     const unsubscribe = subscribeKeys(
       (state) => state.forward || state.backward || state.leftward || state.rightward,
       (pressed) => {
-        setPlayerAnimation(pressed ? playerAnimations.walk : playerAnimations.idle);
+        setCurrentPlayerAnimation(pressed ? playerAnimations.walk : playerAnimations.idle);
       },
     );
 
@@ -66,13 +57,13 @@ const Player = () => {
   }, []);
 
   useEffect(() => {
-    const action = penguinAnimations.actions[playerAnimation];
+    const action = penguinAnimations.actions[currentPlayerAnimation];
     action?.reset().fadeIn(0.5).play();
 
     return () => {
       action?.fadeOut(0.5);
     };
-  }, [playerAnimation]);
+  }, [currentPlayerAnimation]);
 
   useEffect(() => {
     const action = penguinAnimations.actions[playerControls.animationName];
@@ -153,15 +144,16 @@ const Player = () => {
   };
 
   const updateMovement = (state: RootState, delta: number) => {
+    if (isTransitioning.current) {
+      return;
+    }
+
     const keys = getKeys();
 
     const impulseStrength = 3 * delta;
-
     const inputDirection = new THREE.Vector3(
       Number(keys.leftward) - Number(keys.rightward),
-
       0,
-
       Number(keys.forward) - Number(keys.backward),
     );
 
@@ -174,27 +166,21 @@ const Player = () => {
     }
 
     const cameraDirection = new THREE.Vector3();
-
     state.camera.getWorldDirection(cameraDirection);
-
     const cameraAngle = Math.atan2(cameraDirection.x, cameraDirection.z);
 
     inputDirection.applyAxisAngle(new THREE.Vector3(0, 1, 0), cameraAngle);
-
     body.current.applyImpulse(
       {
         x: inputDirection.x,
         y: 0,
         z: inputDirection.z,
       },
-
       true,
     );
 
     const targetAngle = Math.atan2(inputDirection.x, inputDirection.z);
-
     targetRotation.current = targetAngle;
-
     let angleDiff = targetRotation.current - currentRotationY.current;
 
     while (angleDiff > Math.PI) {
@@ -206,17 +192,16 @@ const Player = () => {
     }
 
     currentRotationY.current += angleDiff * 4 * delta;
-
     const targetQuaternion = new THREE.Quaternion().setFromEuler(
       new THREE.Euler(0, currentRotationY.current, 0),
     );
 
     body.current.setRotation(targetQuaternion, true);
+    setCurrentPlayerAnimation(playerAnimations.walk);
   };
 
   useFrame((state, delta) => {
     updateCamera(state, delta);
-
     updateMovement(state, delta);
   });
 
