@@ -41,13 +41,18 @@ const Player = () => {
   useEffect(() => {
     const unsubscribe = subscribeKeys(
       (state) => state.forward || state.backward || state.leftward || state.rightward,
+
       (pressed) => {
+        if (!canMovePlayer) {
+          return;
+        }
+
         setCurrentPlayerAnimation(pressed ? playerAnimations.walk : playerAnimations.idle);
       },
     );
 
     return unsubscribe;
-  }, [subscribeKeys]);
+  }, [subscribeKeys, canMovePlayer]);
 
   useEffect(() => {
     penguin.scene.traverse((child) => {
