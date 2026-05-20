@@ -69,7 +69,7 @@ const CampFire = () => {
           message="sup"
           scale={0.5}
           position={[-1.5, 0.5, 1.5]}
-          rotation={[0, 0.6, 0]}
+          rotation={[0, 4, 0]}
         />
       </group>
     </>
