@@ -1,4 +1,5 @@
 import Ghost from './ghost';
+import WisdomBear from './wisdom_bear';
 import { Sparkles } from '@react-three/drei';
 
 const DynamicProps = () => {
@@ -19,6 +20,7 @@ const DynamicProps = () => {
         opacity={1}
         color="#ffffff"
       />
+      <WisdomBear />
     </>
   );
 };

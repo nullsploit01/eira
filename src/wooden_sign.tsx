@@ -96,7 +96,7 @@ const WoodenSign = ({
       />
 
       {!active && (
-        <Html occlude position={[0, 1.15, 0]} center distanceFactor={8}>
+        <Html occlude position={[0, 1.15, 0]} center>
           <div
             style={{
               position: 'relative',
@@ -179,7 +179,7 @@ const WoodenSign = ({
       )}
 
       {active && (
-        <Html position={[0, 2.3, 0]} distanceFactor={9} center occlude>
+        <Html position={[0, 2.3, 0]} center>
           <div
             style={{
               width: '320px',

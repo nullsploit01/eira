@@ -72,7 +72,7 @@ const CampFire = () => {
         <pointLight position={[0, 0.3, 0]} intensity={2} distance={4} decay={2} color="#ff5a36" />
         <WoodenSign
           onClick={handleSignClick}
-          title="Daily Wisdom"
+          title="Icy Advice"
           message={advice}
           scale={0.5}
           position={[-1.5, 0.5, 1.5]}

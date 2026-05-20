@@ -52,7 +52,7 @@ const AppCanvas = () => {
           <OrbitControls />
         </Physics>
       </Canvas>
-      <Leva hidden={!hasDebug} />
+      <Leva flat hidden={!hasDebug} />
     </KeyboardControlMapping>
   );
 };
