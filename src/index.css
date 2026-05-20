@@ -22,3 +22,17 @@ canvas {
   align-items: center !important;
   justify-content: center !important;
 }
+
+@keyframes frostFloat {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}

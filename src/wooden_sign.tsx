@@ -95,64 +95,205 @@ const WoodenSign = ({
       />
 
       {!active && (
-        <Html occlude position={[0, 1.2, 0]} center distanceFactor={12}>
+        <Html occlude position={[0, 1.15, 0]} center distanceFactor={8}>
           <div
             style={{
-              padding: '4px 10px',
-              borderRadius: '999px',
-              background: 'rgba(0,0,0,0.35)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              color: 'white',
-              fontSize: '11px',
+              position: 'relative',
+              padding: '10px 18px',
+              borderRadius: '14px',
+              background: `
+                linear-gradient(
+                  180deg,
+                  rgba(16, 22, 34, 0.72),
+                  rgba(10, 14, 22, 0.82)
+                )
+              `,
+              border: '1px solid rgba(180,220,255,0.08)',
+              backdropFilter: 'blur(10px)',
+              color: '#dce7f5',
+              fontSize: '13px',
               fontWeight: 600,
+              letterSpacing: '0.02em',
               whiteSpace: 'nowrap',
-              backdropFilter: 'blur(6px)',
-              opacity: hovered ? 1 : 0.75,
-              transform: hovered ? 'translateY(-2px)' : 'translateY(0px)',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+              transform: hovered ? 'translateY(-2px) scale(1.02)' : 'translateY(0px) scale(1)',
+              opacity: hovered ? 1 : 0.82,
+              transition: 'all 0.25s ease',
+              boxShadow: hovered
+                ? `
+                0 0 18px rgba(180,220,255,0.08),
+                0 6px 30px rgba(0,0,0,0.45)
+              `
+                : `
+                0 4px 20px rgba(0,0,0,0.35)
+              `,
               userSelect: 'none',
               pointerEvents: 'none',
+              overflow: 'hidden',
             }}
           >
-            📍 {title}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: `
+                  radial-gradient(
+                    circle at top left,
+                    rgba(180,220,255,0.06),
+                    transparent 40%
+                  )
+                `,
+                pointerEvents: 'none',
+              }}
+            />
+
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+              }}
+            >
+              <div
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  background: hovered ? 'rgba(220,240,255,0.95)' : 'rgba(180,220,255,0.55)',
+                  boxShadow: hovered
+                    ? '0 0 10px rgba(200,230,255,0.8)'
+                    : '0 0 6px rgba(180,220,255,0.25)',
+                }}
+              />
+
+              <span
+                style={{
+                  color: '#dce7f5',
+                }}
+              >
+                {title}
+              </span>
+            </div>
           </div>
         </Html>
       )}
 
       {active && (
-        <Html position={[0, 1.8, 0]} center distanceFactor={5}>
+        <Html position={[0, 2.3, 0]} distanceFactor={9} center occlude>
           <div
             style={{
-              minWidth: '200px',
-              padding: '14px',
-              borderRadius: '16px',
-              background: 'rgba(20,20,20,0.72)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              color: 'white',
-              backdropFilter: 'blur(10px)',
-              boxShadow: '0 10px 40px rgba(0,0,0,0.35)',
-              animation: 'fadeIn 0.25s ease',
+              width: '320px',
+              padding: '24px',
+              borderRadius: '18px',
+              background: `
+                linear-gradient(
+                  180deg,
+                  rgba(18, 26, 40, 0.82),
+                  rgba(8, 12, 20, 0.9)
+                )
+              `,
+
+              border: '1px solid rgba(180, 220, 255, 0.08)',
+              backdropFilter: 'blur(14px)',
+              boxShadow: `
+                0 0 40px rgba(120,180,255,0.04),
+                0 10px 60px rgba(0,0,0,0.55)
+              `,
+              color: '#dce7f5',
+              position: 'relative',
+              overflow: 'hidden',
+              animation: 'frostFloat 4s ease-in-out infinite',
             }}
           >
             <div
               style={{
-                fontSize: '18px',
-                fontWeight: 700,
-                marginBottom: '10px',
+                position: 'absolute',
+                inset: 0,
+                background: `
+                  radial-gradient(
+                    circle at top left,
+                    rgba(180,220,255,0.08),
+                    transparent 40%
+                  )
+                `,
+                pointerEvents: 'none',
+              }}
+            />
+
+            <div
+              style={{
+                position: 'absolute',
+                top: '-40px',
+                right: '-40px',
+                width: '120px',
+                height: '120px',
+                borderRadius: '50%',
+                background: 'rgba(180,220,255,0.03)',
+                filter: 'blur(30px)',
+              }}
+            />
+
+            <div
+              style={{
+                fontSize: '10px',
+                letterSpacing: '0.32em',
+                textTransform: 'uppercase',
+                color: 'rgba(200,220,255,0.45)',
+                marginBottom: '20px',
+              }}
+            >
+              ❄ FROZEN WHISPERS
+            </div>
+
+            <div
+              style={{
+                fontSize: '30px',
+                fontWeight: 600,
+                marginBottom: '14px',
+                color: '#eef5ff',
+                lineHeight: 1.1,
+                textShadow: '0 0 12px rgba(180,220,255,0.08)',
               }}
             >
               {title}
             </div>
+
             <div
               style={{
-                fontSize: '13px',
-                lineHeight: 1.6,
-                opacity: 0.9,
+                width: '90px',
+                height: '1px',
+                background: 'linear-gradient(to right, rgba(200,230,255,0.6), transparent)',
+                marginBottom: '18px',
+              }}
+            />
+
+            <div
+              style={{
+                fontSize: '15px',
+                lineHeight: 1.9,
+                color: 'rgba(220,230,245,0.82)',
+                fontStyle: 'italic',
               }}
             >
-              {message}
+              "{message}"
             </div>
+
+            <button
+              onClick={() => setActive(false)}
+              style={{
+                marginTop: '24px',
+                background: 'transparent',
+                border: 'none',
+                color: 'rgba(190,220,255,0.68)',
+                cursor: 'pointer',
+                fontSize: '13px',
+                letterSpacing: '0.04em',
+                padding: 0,
+                transition: '0.2s ease',
+                opacity: 0.8,
+              }}
+            >
+              continue wandering →
+            </button>
           </div>
         </Html>
       )}
