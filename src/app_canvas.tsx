@@ -5,9 +5,11 @@ import PostProcessing from './post_processing';
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Physics } from '@react-three/rapier';
+import { Leva } from 'leva';
 import { Perf } from 'r3f-perf';
 
 const AppCanvas = () => {
+  const hasDebug = window.location.hash.includes('#debug');
   const generalControls = useLevaControls('General', {
     color: '#212122',
     debugPhysics: false,
@@ -30,7 +32,7 @@ const AppCanvas = () => {
         }}
       >
         <PostProcessing />
-        <Perf position="top-left" />
+        {hasDebug && <Perf position="top-left" />}
         <Physics debug={generalControls.debugPhysics}>
           {generalControls.ambientLight && (
             <ambientLight
@@ -50,6 +52,7 @@ const AppCanvas = () => {
           <OrbitControls />
         </Physics>
       </Canvas>
+      <Leva hidden={!hasDebug} />
     </KeyboardControlMapping>
   );
 };
