@@ -1,15 +1,16 @@
 import { playerAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
+import { getAdvice } from './services/api';
 import { useExperienceStore } from './stores/experience_store';
 import WoodenSign from './wooden_sign';
 import { useAnimations, useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { PointLight } from 'three';
 
 const CampFire = () => {
+  const [advice, setAdvice] = useState<string>('');
   const setCurrentPlayerAnimation = useExperienceStore((state) => state.setPlayerAnimation);
-
   const model = useGLTF('./models/camp_fire/camp_fire.glb');
   const animations = useAnimations(model.animations, model.scene);
   const lightRef = useRef<PointLight>({} as PointLight);
@@ -28,6 +29,12 @@ const CampFire = () => {
       options: animations.names,
     },
   });
+
+  useEffect(() => {
+    getAdvice()
+      .then((response) => setAdvice(response.data.slip.advice))
+      .catch((error) => console.error(error));
+  }, []);
 
   useEffect(() => {
     const action = animations.actions[controls.animation];
@@ -65,8 +72,8 @@ const CampFire = () => {
         <pointLight position={[0, 0.3, 0]} intensity={2} distance={4} decay={2} color="#ff5a36" />
         <WoodenSign
           onClick={handleSignClick}
-          title="Fun Fact"
-          message="sup"
+          title="Daily Wisdom"
+          message={advice}
           scale={0.5}
           position={[-1.5, 0.5, 1.5]}
           rotation={[0, 4, 0]}

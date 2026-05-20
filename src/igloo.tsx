@@ -1,10 +1,11 @@
 import { playerAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
+import { getTodaysQuest } from './services/api';
 import { useExperienceStore } from './stores/experience_store';
 import WoodenSign from './wooden_sign';
 import { useGLTF, useHelper } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Mesh, type PointLight, PointLightHelper } from 'three';
 
 const Igloo = () => {
@@ -12,6 +13,8 @@ const Igloo = () => {
   const lantern = useGLTF('./models/lantern/lantern.glb');
   const lightRef = useRef<PointLight>({} as PointLight);
   const setCurrentPlayerAnimation = useExperienceStore((state) => state.setPlayerAnimation);
+
+  const [quest, setQuest] = useState<string>('');
 
   useEffect(() => {
     igloo.scene.traverse((child) => {
@@ -25,6 +28,10 @@ const Igloo = () => {
         child.castShadow = true;
       }
     });
+
+    getTodaysQuest()
+      .then((response) => setQuest(response.data.activity))
+      .catch((error) => console.error(error));
   }, []);
 
   const controls = useLevaControls('Igloo', {
@@ -77,8 +84,8 @@ const Igloo = () => {
         />
         <WoodenSign
           onClick={handleSignClick}
-          title="About Me"
-          message="Just a guy who loves to code."
+          title="Open Quest!"
+          message={quest}
           scale={0.5}
           position={[-2.2, 0.5, 2.3]}
           rotation={[0, 0.6, 0]}

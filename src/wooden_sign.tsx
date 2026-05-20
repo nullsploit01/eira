@@ -79,7 +79,7 @@ const WoodenSign = ({
           object={woodenSign.scene}
           onClick={() => {
             onClick();
-            setActive(true);
+            setActive(!active);
           }}
           onPointerEnter={() => setHovered(true)}
           onPointerLeave={() => setHovered(false)}
