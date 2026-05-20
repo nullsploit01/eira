@@ -1,5 +1,5 @@
 import { useExperienceStore } from './stores/experience_store';
-import { Clone, Html, useCursor, useGLTF } from '@react-three/drei';
+import { Clone, Html, useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
 import { useEffect, useRef, useState } from 'react';
@@ -28,8 +28,6 @@ const WoodenSign = ({
   const [hovered, setHovered] = useState(false);
   const [active, setActive] = useState(false);
   const setCanMovePlayer = useExperienceStore((state) => state.setCanMovePlayer);
-
-  useCursor(hovered, 'pointer');
 
   const woodenSign = useGLTF('./models/wooden_sign/wooden_sign.glb');
 

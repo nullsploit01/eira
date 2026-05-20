@@ -1,5 +1,5 @@
 import { useExperienceStore } from './stores/experience_store';
-import { Html, useCursor } from '@react-three/drei';
+import { Html } from '@react-three/drei';
 import { useState } from 'react';
 
 const SnowmanMessage = () => {
@@ -7,8 +7,6 @@ const SnowmanMessage = () => {
 
   const startGame = useExperienceStore((state) => state.startGame);
   const hasStarted = useExperienceStore((state) => state.hasStarted);
-
-  useCursor(hovered, 'pointer');
 
   return (
     <Html position={[0, 6, 0]} center distanceFactor={7}>
