@@ -2,6 +2,7 @@ import { playerAnimations } from './constants/animations';
 import { useLevaControls } from './hooks/useLevaControls';
 import { useExperienceStore } from './stores/experience_store';
 import { useAnimations, useGLTF, useKeyboardControls } from '@react-three/drei';
+import { useFrame, useThree } from '@react-three/fiber';
 import { CuboidCollider, RapierRigidBody, RigidBody } from '@react-three/rapier';
 import Ecctrl from 'ecctrl';
 import { useEffect, useRef } from 'react';
@@ -16,6 +17,10 @@ const Player = () => {
   const [subscribeKeys] = useKeyboardControls();
   const body = useRef<RapierRigidBody>({} as RapierRigidBody);
   const isTransitioning = useRef(false);
+  const transitionStart = useRef(0);
+
+  const transitionDuration = 2.5;
+  const { camera } = useThree();
 
   const penguin = useGLTF('./models/penguin/scene.gltf');
   const penguinAnimations = useAnimations(penguin.animations, penguin.scene);
@@ -81,11 +86,12 @@ const Player = () => {
   }, [playerControls.animationName]);
 
   useEffect(() => {
-    if (!playerControls.cameraFollowsPlayer && !hasStarted) {
+    if (!hasStarted) {
       return;
     }
 
     isTransitioning.current = true;
+    transitionStart.current = performance.now();
     const action = penguinAnimations.actions[playerAnimations.shake];
     if (!action) {
       return;
@@ -95,7 +101,43 @@ const Player = () => {
     action.reset().fadeIn(0.5);
     action.setLoop(THREE.LoopRepeat, 3);
     action.play();
-  }, [playerControls.cameraFollowsPlayer, hasStarted]);
+
+    const timeout = setTimeout(() => {
+      isTransitioning.current = false;
+    }, 2500);
+
+    return () => clearTimeout(timeout);
+  }, [hasStarted]);
+
+  useFrame(() => {
+    if (!isTransitioning.current) {
+      return;
+    }
+
+    const elapsed = (performance.now() - transitionStart.current) / 1000;
+
+    const t = Math.min(elapsed / transitionDuration, 1);
+
+    const eased = 1 - Math.pow(1 - t, 3);
+
+    const playerPosition = new THREE.Vector3(
+      playerControls.position[0],
+      playerControls.position[1],
+      playerControls.position[2],
+    );
+
+    const startPosition = new THREE.Vector3(5, 5, 5);
+    const endPosition = new THREE.Vector3(
+      playerPosition.x,
+      playerPosition.y + 0.8,
+      playerPosition.z - 4.25,
+    );
+
+    camera.position.lerpVectors(startPosition, endPosition, eased);
+    camera.lookAt(playerPosition.x, playerPosition.y + 0.6, playerPosition.z);
+  });
+
+  const disableFollowCam = !hasStarted;
 
   return (
     <RigidBody
@@ -114,7 +156,7 @@ const Player = () => {
         position={[0, 0, 0]}
         mode="FixedCamera"
         disableControl={!hasStarted || !canMovePlayer}
-        disableFollowCam={!hasStarted}
+        disableFollowCam={disableFollowCam}
         camCollision={false}
         camTargetPos={{ x: 0, y: 0.6, z: 0 }}
         camFollowMult={hasStarted && canMovePlayer ? 5 : 0}
