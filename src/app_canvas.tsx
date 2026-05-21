@@ -1,14 +1,17 @@
 import Experience from './experience';
 import { useLevaControls } from './hooks/useLevaControls';
 import KeyboardControlMapping from './keyboard_controls';
+import Loader from './loader';
 import PostProcessing from './post_processing';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, useProgress } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { Physics } from '@react-three/rapier';
 import { Leva } from 'leva';
 import { Perf } from 'r3f-perf';
 
 const AppCanvas = () => {
+  const { active } = useProgress();
+
   const hasDebug = window.location.hash.includes('#debug');
   const generalControls = useLevaControls('General', {
     color: '#212122',
@@ -48,8 +51,8 @@ const AppCanvas = () => {
             />
           )}
           <color args={[generalControls.color]} attach={'background'} />
-          <Experience />
-          <OrbitControls />
+          {active ? <Loader /> : <Experience />}
+          <OrbitControls enableZoom={hasDebug} enablePan={hasDebug} enableRotate={hasDebug} />
         </Physics>
       </Canvas>
       <Leva flat hidden={!hasDebug} />

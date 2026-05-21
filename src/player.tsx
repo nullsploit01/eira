@@ -43,7 +43,12 @@ const Player = () => {
       (state) => state.forward || state.backward || state.leftward || state.rightward,
 
       (pressed) => {
+        if (!hasStarted) {
+          return;
+        }
+
         if (!canMovePlayer) {
+          setCurrentPlayerAnimation(playerAnimations.idle);
           return;
         }
 
@@ -52,7 +57,7 @@ const Player = () => {
     );
 
     return unsubscribe;
-  }, [subscribeKeys, canMovePlayer]);
+  }, [subscribeKeys, canMovePlayer, hasStarted]);
 
   useEffect(() => {
     penguin.scene.traverse((child) => {
