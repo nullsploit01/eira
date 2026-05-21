@@ -1,4 +1,5 @@
 import { Clone, useGLTF } from '@react-three/drei';
+import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import { useEffect } from 'react';
 import * as THREE from 'three';
 
@@ -20,9 +21,12 @@ const Tree = ({ position = [0, 0, 0], rotation = [0, 0, 0], scale = 0.5 }: TreeP
   }, []);
 
   return (
-    <mesh position={position} rotation={rotation} scale={scale}>
-      <Clone object={model.scene} />
-    </mesh>
+    <RigidBody type="fixed" colliders={false} position={position} rotation={rotation}>
+      <mesh scale={scale}>
+        <Clone object={model.scene} />
+      </mesh>
+      <CuboidCollider args={[0.2, 0.6, 0.2]} position={[0, 0.6, 0]} />
+    </RigidBody>
   );
 };
 
