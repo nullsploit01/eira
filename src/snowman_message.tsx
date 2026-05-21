@@ -1,5 +1,5 @@
 import { useExperienceStore } from './stores/experience_store';
-import { Html } from '@react-three/drei';
+import { Html, useCursor } from '@react-three/drei';
 import { useState } from 'react';
 
 const SnowmanMessage = () => {
@@ -8,8 +8,10 @@ const SnowmanMessage = () => {
   const startGame = useExperienceStore((state) => state.startGame);
   const hasStarted = useExperienceStore((state) => state.hasStarted);
 
+  useCursor(hovered);
+
   return (
-    <Html position={[0, 6, 0]} center distanceFactor={7}>
+    <Html position={[0, 6, 0]} center distanceFactor={6}>
       <div
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
@@ -31,8 +33,7 @@ const SnowmanMessage = () => {
           transition: 'all 0.2s ease',
         }}
       >
-        {!hasStarted ? 'Hey traveler ☃️ Wanna Explore?' : 'Have Fun!'}
-
+        {!hasStarted ? 'Lost in the snow?' : 'Have Fun!'}
         <div
           style={{
             position: 'absolute',

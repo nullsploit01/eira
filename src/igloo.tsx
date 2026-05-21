@@ -84,7 +84,7 @@ const Igloo = () => {
         />
         <WoodenSign
           onClick={handleSignClick}
-          title="Open Quest!"
+          title="Seek Quest"
           message={quest}
           scale={0.5}
           position={[-2.2, 0.5, 2.3]}

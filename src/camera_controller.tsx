@@ -6,7 +6,7 @@ const CameraController = () => {
   const { camera } = useThree();
 
   const controls = useLevaControls('Camera', {
-    cameraPosition: [3.28, 2, 5.3] as [number, number, number],
+    cameraPosition: [4.9, 1.44, 3] as [number, number, number],
   });
 
   useEffect(() => {
