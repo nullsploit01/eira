@@ -1,13 +1,44 @@
-"African penguin (Spheniscus demersus) Low poly" (https://skfb.ly/ps7KC) by Major is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+## Credits
 
-"A Welcoming Sign" (https://skfb.ly/6SN7B) by Raneman is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+This project uses several third-party assets under the Creative Commons Attribution 4.0 license.
 
-"Snow Man" (https://skfb.ly/6WKLo) by Erik H is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+### 3D Models
 
-"Igloo" (https://skfb.ly/oBoTZ) by Vera4Art is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+- **African penguin (Spheniscus demersus) Low poly**  
+  Created by Major  
+  https://skfb.ly/ps7KC
 
-"Stylized Lantern" (https://skfb.ly/6FQqq) by Izzy is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+- **A Welcoming Sign**  
+  Created by Raneman  
+  https://skfb.ly/6SN7B
 
-"Pine tree" (https://skfb.ly/6VKKJ) by Andriy Shekh is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+- **Snow Man**  
+  Created by Erik H  
+  https://skfb.ly/6WKLo
 
-"Fence (Wood)" (https://skfb.ly/REop) by trentspi is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+- **Igloo**  
+  Created by Vera4Art  
+  https://skfb.ly/oBoTZ
+
+- **Stylized Lantern**  
+  Created by Izzy  
+  https://skfb.ly/6FQqq
+
+- **Pine tree**  
+  Created by Andriy Shekh  
+  https://skfb.ly/6VKKJ
+
+- **Fence (Wood)**  
+  Created by trentspi  
+  https://skfb.ly/REop
+
+### Textures
+
+- **Snow Texture**  
+  Provided by Poly Haven  
+  https://polyhaven.com/a/snow_02
+
+---
+
+All listed assets are licensed under the  
+[Creative Commons Attribution 4.0 License](http://creativecommons.org/licenses/by/4.0/).
