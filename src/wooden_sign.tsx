@@ -1,3 +1,4 @@
+import { useIsMobile } from './hooks/useIsMobile';
 import { useExperienceStore } from './stores/experience_store';
 import { Clone, Html, useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
@@ -28,7 +29,7 @@ const WoodenSign = ({
   const [hovered, setHovered] = useState(false);
   const [active, setActive] = useState(false);
   const setCanMovePlayer = useExperienceStore((state) => state.setCanMovePlayer);
-
+  const isMobile = useIsMobile();
   const woodenSign = useGLTF('./models/wooden_sign/wooden_sign.glb');
 
   useEffect(() => {
@@ -79,7 +80,7 @@ const WoodenSign = ({
           object={woodenSign.scene}
           onClick={() => {
             onClick();
-            setCanMovePlayer(false);
+            // setCanMovePlayer(false);
             setActive(true);
           }}
           onPointerEnter={() => setHovered(true)}
@@ -179,12 +180,17 @@ const WoodenSign = ({
       )}
 
       {active && (
-        <Html position={[0, 2.3, 0]} center>
+        <Html
+          position={isMobile ? [0, 1.35, 0] : [0, 2.3, 0]}
+          center
+          distanceFactor={isMobile ? 14 : 10}
+        >
           <div
             style={{
-              width: '320px',
-              padding: '24px',
-              borderRadius: '18px',
+              width: isMobile ? '220px' : '320px',
+              maxWidth: isMobile ? '75vw' : '420px',
+              padding: isMobile ? '14px' : '24px',
+              borderRadius: isMobile ? '14px' : '18px',
               background: `
                 linear-gradient(
                   180deg,
@@ -192,7 +198,6 @@ const WoodenSign = ({
                   rgba(8, 12, 20, 0.9)
                 )
               `,
-
               border: '1px solid rgba(180, 220, 255, 0.08)',
               backdropFilter: 'blur(14px)',
               boxShadow: `
@@ -203,6 +208,7 @@ const WoodenSign = ({
               position: 'relative',
               overflow: 'hidden',
               animation: 'frostFloat 4s ease-in-out infinite',
+              transform: isMobile ? 'scale(0.82)' : 'scale(1)',
             }}
           >
             <div
@@ -235,11 +241,11 @@ const WoodenSign = ({
 
             <div
               style={{
-                fontSize: '10px',
-                letterSpacing: '0.32em',
+                fontSize: isMobile ? '7px' : '10px',
+                letterSpacing: '0.24em',
                 textTransform: 'uppercase',
                 color: 'rgba(200,220,255,0.45)',
-                marginBottom: '20px',
+                marginBottom: isMobile ? '10px' : '20px',
               }}
             >
               ❄ FROZEN WHISPERS
@@ -247,9 +253,9 @@ const WoodenSign = ({
 
             <div
               style={{
-                fontSize: '30px',
+                fontSize: isMobile ? '18px' : '30px',
                 fontWeight: 600,
-                marginBottom: '14px',
+                marginBottom: isMobile ? '10px' : '14px',
                 color: '#eef5ff',
                 lineHeight: 1.1,
                 textShadow: '0 0 12px rgba(180,220,255,0.08)',
@@ -260,17 +266,17 @@ const WoodenSign = ({
 
             <div
               style={{
-                width: '90px',
+                width: isMobile ? '60px' : '90px',
                 height: '1px',
                 background: 'linear-gradient(to right, rgba(200,230,255,0.6), transparent)',
-                marginBottom: '18px',
+                marginBottom: isMobile ? '12px' : '18px',
               }}
             />
 
             <div
               style={{
-                fontSize: '15px',
-                lineHeight: 1.9,
+                fontSize: isMobile ? '11px' : '15px',
+                lineHeight: isMobile ? 1.55 : 1.9,
                 color: 'rgba(220,230,245,0.82)',
                 fontStyle: 'italic',
               }}
@@ -284,12 +290,12 @@ const WoodenSign = ({
                 setActive(false);
               }}
               style={{
-                marginTop: '24px',
+                marginTop: isMobile ? '16px' : '24px',
                 background: 'transparent',
                 border: 'none',
                 color: 'rgba(190,220,255,0.68)',
                 cursor: 'pointer',
-                fontSize: '13px',
+                fontSize: isMobile ? '11px' : '13px',
                 letterSpacing: '0.04em',
                 padding: 0,
                 transition: '0.2s ease',

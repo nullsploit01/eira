@@ -44,7 +44,7 @@ const WisdomBear = () => {
             <div
               onClick={() => {
                 setActive(true);
-                setCanMovePlayer(false);
+                // setCanMovePlayer(false);
               }}
               onPointerEnter={() => setHovered(true)}
               onPointerLeave={() => setHovered(false)}
