@@ -275,7 +275,7 @@ const WoodenSign = ({
                 fontStyle: 'italic',
               }}
             >
-              "{message}"
+              "{message || '...'}"
             </div>
 
             <button

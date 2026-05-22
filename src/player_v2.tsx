@@ -1,5 +1,4 @@
 import { playerAnimations } from './constants/animations';
-import { useIsMobile } from './hooks/useIsMobile';
 import { useLevaControls } from './hooks/useLevaControls';
 import { useExperienceStore } from './stores/experience_store';
 import { useAnimations, useGLTF, useKeyboardControls } from '@react-three/drei';
@@ -18,7 +17,6 @@ const Player = () => {
   const body = useRef<RapierRigidBody>({} as RapierRigidBody);
   const isTransitioning = useRef(false);
   const transitionStart = useRef(0);
-  const isMobile = useIsMobile();
   const transitionDuration = 2.5;
   const { camera } = useThree();
   const characterRef = useRef<CustomEcctrlRigidBody | null>(null);
@@ -168,11 +166,11 @@ const Player = () => {
         ref={characterRef}
         animated
         position={[0, 0, 0]}
-        mode={isMobile ? 'PointToMove' : 'FixedCamera'}
+        mode={'PointToMove'}
         disableControl={!hasStarted || !canMovePlayer}
         disableFollowCam={disableFollowCam}
         camCollision={false}
-        camTargetPos={{ x: 0, y: isMobile ? 0 : 0.6, z: 0 }}
+        camTargetPos={{ x: 0, y: 0.6, z: 0 }}
         camFollowMult={hasStarted && canMovePlayer ? 5 : 0}
         camLerpMult={hasStarted && canMovePlayer ? 5 : 0}
         turnSpeed={5}

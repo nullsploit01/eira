@@ -11,40 +11,76 @@ const SnowmanMessage = () => {
   useCursor(hovered);
 
   return (
-    <Html position={[0, 6, 0]} center distanceFactor={6}>
+    <Html position={[0, 6, 0]} center distanceFactor={4}>
       <div
         onPointerEnter={() => setHovered(true)}
         onPointerLeave={() => setHovered(false)}
         onClick={() => startGame()}
         style={{
           position: 'relative',
-          padding: '6px 12px',
-          background: hovered ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.18)',
-          transform: hovered ? 'translateY(-2px) scale(1.05)' : 'translateY(0px) scale(1)',
-          boxShadow: hovered ? '0 0 20px rgba(255,255,255,0.2)' : '0 4px 10px rgba(0,0,0,0.12)',
-          border: '1px solid rgba(255,255,255,0.12)',
-          backdropFilter: 'blur(6px)',
-          borderRadius: '12px',
-          color: 'white',
-          fontSize: '11px',
-          fontWeight: 500,
-          whiteSpace: 'nowrap',
-          textShadow: '0 2px 4px rgba(0,0,0,0.45)',
-          transition: 'all 0.2s ease',
+
+          padding: '10px 24px',
+
+          borderRadius: '999px',
+
+          background: hovered
+            ? `
+              linear-gradient(
+                180deg,
+                rgba(210,230,255,0.16),
+                rgba(120,150,180,0.08)
+              )
+            `
+            : `
+              linear-gradient(
+                180deg,
+                rgba(220,235,255,0.1),
+                rgba(120,150,180,0.05)
+              )
+            `,
+          border: '1px solid rgba(220,235,255,0.14)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          boxShadow: hovered
+            ? `
+              0 0 18px rgba(180,220,255,0.08),
+              0 8px 24px rgba(0,0,0,0.24)
+            `
+            : `
+              0 4px 16px rgba(0,0,0,0.18)
+            `,
+          transform: hovered ? 'translateY(-2px)' : 'translateY(0px)',
+          transition: 'all 0.22s ease',
+          cursor: 'pointer',
+          userSelect: 'none',
         }}
       >
-        {!hasStarted ? 'Lost in the snow?' : 'Have Fun!'}
+        <div
+          style={{
+            color: 'rgba(245,250,255,0.96)',
+            fontSize: '15px',
+            fontWeight: 500,
+            letterSpacing: '-0.02em',
+            textAlign: 'center',
+            fontFamily: '"Georgia", serif',
+            textShadow: '0 1px 6px rgba(0,0,0,0.35)',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {!hasStarted ? 'Lost in the snow?' : 'Have Fun ❄️'}
+        </div>
+
         <div
           style={{
             position: 'absolute',
-            bottom: '-4px',
-            left: '18px',
-            width: '8px',
-            height: '8px',
-            background: 'rgba(255,255,255,0.18)',
-            borderRight: '1px solid rgba(255,255,255,0.12)',
-            borderBottom: '1px solid rgba(255,255,255,0.12)',
-            transform: 'rotate(45deg)',
+            left: '50%',
+            bottom: '-5px',
+            width: '10px',
+            height: '10px',
+            transform: 'translateX(-50%) rotate(45deg)',
+            background: 'rgba(200,225,255,0.08)',
+            borderRight: '1px solid rgba(220,235,255,0.1)',
+            borderBottom: '1px solid rgba(220,235,255,0.1)',
           }}
         />
       </div>
