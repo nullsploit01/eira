@@ -14,7 +14,7 @@ type ExperienceState = {
 export const useExperienceStore = create<ExperienceState>((set) => ({
   hasStarted: false,
   playerAnimation: playerAnimations.sleep,
-  canMovePlayer: true,
+  canMovePlayer: false,
 
   setCanMovePlayer: (canMove: boolean) =>
     set({
