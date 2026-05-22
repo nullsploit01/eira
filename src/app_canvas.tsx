@@ -1,4 +1,5 @@
 import Experience from './experience';
+import { useIsMobile } from './hooks/useIsMobile';
 import { useLevaControls } from './hooks/useLevaControls';
 import KeyboardControlMapping from './keyboard_controls';
 import Loader from './loader';
@@ -11,7 +12,7 @@ import { Perf } from 'r3f-perf';
 
 const AppCanvas = () => {
   const { active } = useProgress();
-
+  const isMobile = useIsMobile();
   const hasDebug = window.location.hash.includes('#debug');
   const generalControls = useLevaControls('General', {
     color: '#212122',
@@ -29,7 +30,7 @@ const AppCanvas = () => {
       <Canvas
         shadows
         camera={{
-          fov: 55,
+          fov: isMobile ? 75 : 55,
           near: 0.1,
           far: 45,
         }}
