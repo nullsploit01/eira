@@ -324,7 +324,7 @@ const WisdomBear = () => {
                   </button>
 
                   <a
-                    href="https://github.com/nullsploit01/portfolio"
+                    href="https://github.com/nullsploit01/eira"
                     target="_blank"
                     rel="noreferrer"
                     style={{
