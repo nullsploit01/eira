@@ -1,7 +1,10 @@
 import Fence from './fence';
+import { useIsMobile } from './hooks/useIsMobile';
 import { useLevaControls } from './hooks/useLevaControls';
+import { useExperienceStore } from './stores/experience_store';
 import Tree from './tree';
-import { useMemo } from 'react';
+import { Html } from '@react-three/drei';
+import { useEffect, useMemo, useState } from 'react';
 
 const StaticProps = () => {
   const controls = useLevaControls('StaticProps', {
@@ -9,7 +12,24 @@ const StaticProps = () => {
     enableFog: true,
   });
 
+  const isMobile = useIsMobile();
+  const hasStarted = useExperienceStore((state) => state.hasStarted);
   const randomScale = useMemo(() => 0.01 + Math.random() * 0.012, []);
+
+  const [showMobileHint, setShowMobileHint] = useState(isMobile && hasStarted);
+
+  useEffect(() => {
+    if (!isMobile || !hasStarted) {
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setShowMobileHint(false);
+    }, 10000);
+
+    return () => clearTimeout(timeout);
+  }, [isMobile, hasStarted]);
+
   return (
     <>
       <Tree scale={randomScale} position={[6, 0, 2]} />
@@ -52,22 +72,37 @@ const StaticProps = () => {
         <Fence key={index} rotation={[0, 2.8, 0]} position={[19, 0, -17 + index * 2]} />
       ))}
 
-      {/* <Fence rotation={[0, 2.8, 0]} position={[19, 0, -17]} />
-      <Fence rotation={[0, 2.8, 0]} position={[19, 0, -15]} />
-      <Fence rotation={[0, 2.8, 0]} position={[19, 0, -13]} /> */}
-
-      {/* <Fence rotation={[0, 1.2, 0]} position={[-19, 0, -18.5]} />
-      <Fence rotation={[0, 1.2, 0]} position={[-17, 0, -18.5]} />
-      <Fence rotation={[0, 1.2, 0]} position={[-15, 0, -18.5]} /> */}
-
-      {/* <Fence rotation={[0, -1.9, 0]} position={[-18, 0, 18.5]} />
-      <Fence rotation={[0, -1.9, 0]} position={[-16, 0, 18.5]} />
-      <Fence rotation={[0, -1.9, 0]} position={[-14, 0, 18.5]} /> */}
-
-      {/* <Fence rotation={[0, -0.3, 0]} position={[-18, 0, 17]} />
-      <Fence rotation={[0, -0.3, 0]} position={[-18, 0, 15]} />
-      <Fence rotation={[0, -0.3, 0]} position={[-18, 0, 13]} />
-      <Fence rotation={[0, -0.3, 0]} position={[-18, 0, 11]} /> */}
+      <Html position={[0, 1, 0]}>
+        {showMobileHint && (
+          <div
+            style={{
+              position: 'fixed',
+              bottom: '38px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              padding: '10px 16px',
+              borderRadius: '999px',
+              background: 'rgba(180,220,255,0.08)',
+              border: '1px solid rgba(220,235,255,0.12)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              color: 'rgba(240,248,255,0.92)',
+              fontSize: '13px',
+              fontWeight: 500,
+              letterSpacing: '0.02em',
+              textShadow: '0 1px 4px rgba(0,0,0,0.35)',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.18)',
+              pointerEvents: 'none',
+              userSelect: 'none',
+              whiteSpace: 'nowrap',
+              zIndex: 1000,
+              opacity: 0.9,
+            }}
+          >
+            Tap the snow to wander ❄️
+          </div>
+        )}
+      </Html>
     </>
   );
 };
