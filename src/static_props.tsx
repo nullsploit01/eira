@@ -16,12 +16,15 @@ const StaticProps = () => {
   const hasStarted = useExperienceStore((state) => state.hasStarted);
   const randomScale = useMemo(() => 0.01 + Math.random() * 0.012, []);
 
-  const [showMobileHint, setShowMobileHint] = useState(isMobile && hasStarted);
+  const [showMobileHint, setShowMobileHint] = useState(false);
 
   useEffect(() => {
     if (!isMobile || !hasStarted) {
       return;
     }
+
+    /* eslint-disable-next-line react-hooks/set-state-in-effect */
+    setShowMobileHint(true);
 
     const timeout = setTimeout(() => {
       setShowMobileHint(false);

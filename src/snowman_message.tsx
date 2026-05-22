@@ -67,7 +67,7 @@ const SnowmanMessage = () => {
             whiteSpace: 'nowrap',
           }}
         >
-          {!hasStarted ? 'Lost in the snow?' : 'Have Fun ❄️'}
+          {!hasStarted ? 'Begin Journey' : 'Have Fun ❄️'}
         </div>
 
         <div
