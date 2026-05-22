@@ -17,5 +17,5 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PORTFOLIO_7E234 }}
-          projectId: portfolio-7e234
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_EIRA_CC29D }}
+          projectId: eira-cc29d
