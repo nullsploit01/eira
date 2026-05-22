@@ -172,7 +172,7 @@ const Player = () => {
         disableControl={!hasStarted || !canMovePlayer}
         disableFollowCam={disableFollowCam}
         camCollision={false}
-        camTargetPos={{ x: 0, y: 0.6, z: 0 }}
+        camTargetPos={{ x: 0, y: isMobile ? 0 : 0.6, z: 0 }}
         camFollowMult={hasStarted && canMovePlayer ? 5 : 0}
         camLerpMult={hasStarted && canMovePlayer ? 5 : 0}
         turnSpeed={5}
