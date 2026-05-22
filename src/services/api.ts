@@ -5,8 +5,12 @@ export const getAdvice = async () => {
   return await axios.get<AdviceSlipResponse>('https://api.adviceslip.com/advice');
 };
 
+// export const getTodaysQuest = async () => {
+//   return await axios.get<ActivityResponse>(
+//     'https://corsproxy.io/?https://bored-api.appbrewery.com/random',
+//   );
+// };
+
 export const getTodaysQuest = async () => {
-  return await axios.get<ActivityResponse>(
-    'https://corsproxy.io/?https://bored-api.appbrewery.com/random',
-  );
+  return await axios.get<ActivityResponse>('https://bored.api.lewagon.com/api/activity');
 };

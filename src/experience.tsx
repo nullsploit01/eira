@@ -1,14 +1,12 @@
-import { lazy, Suspense } from 'react';
-
-const Environment = lazy(() => import('./environment'));
-const PlayerV2 = lazy(() => import('./player_v2'));
+import Environment from './environment';
+import PlayerV2 from './player_v2';
 
 const Experience = () => {
   return (
-    <Suspense fallback={null}>
+    <>
       <PlayerV2 />
       <Environment />
-    </Suspense>
+    </>
   );
 };
 

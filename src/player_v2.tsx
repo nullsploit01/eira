@@ -8,7 +8,7 @@ import Ecctrl, { type CustomEcctrlRigidBody, useGame } from 'ecctrl';
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-const Player = () => {
+const PlayerV2 = () => {
   const hasStarted = useExperienceStore((state) => state.hasStarted);
   const currentPlayerAnimation = useExperienceStore((state) => state.playerAnimation);
   const setCurrentPlayerAnimation = useExperienceStore((state) => state.setPlayerAnimation);
@@ -196,4 +196,4 @@ const Player = () => {
   );
 };
 
-export default Player;
+export default PlayerV2;
