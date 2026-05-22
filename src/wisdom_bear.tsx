@@ -243,6 +243,7 @@ const WisdomBear = () => {
                   'Things react when touched.',
                   'Not every visitor truly left.',
                   'The bear remembers more than it says.',
+                  'Inspired by a Cartoon✌️ that stayed with me.',
                 ].map((text, index) => (
                   <div
                     key={text}
